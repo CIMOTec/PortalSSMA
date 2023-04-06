@@ -1,0 +1,66 @@
+{% extends "base.html" %} {% block title %}Formulario{% endblock %} {% block
+content %}
+<h3 align="center">Recursos Materiais Necessários</h3>
+
+<form method="POST"></form>
+    <div>
+        <div>
+            <label>
+                <input type="checkbox" name="agree" value="yes">
+                Ferramentas Manuais
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="agree" value="yes">
+                Ferramenta Pneumática
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="agree" value="yes">
+                Escada
+            </label>
+
+        <div>
+            <label>
+                <input type="checkbox" name="agree" value="yes">
+                Furadeira
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="agree" value="yes">
+                Lixadeira
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="agree" value="yes">
+                Máquina de Solda
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="agree" value="yes">
+                Aparelho de Oxi Corte
+            </label>
+        </div>
+
+        <a href="/riscos">
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button
+                id="button"
+                class="btn btn-primary btn-lg"
+                type="submit"
+                >OK</button>
+            </div>
+        </a>
+    </div>
+</form>
+{% endblock %}

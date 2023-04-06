@@ -1,0 +1,30 @@
+{
+    "solic": [
+        "4265",
+        "4266",
+        "4267",
+        "5854",
+        "5857"
+    ],
+    "Tipo": [
+        "AMBIENTE - QUENTE",
+        "AMBIENTE - QUENTE",
+        "RECOLHIMENTO E DESTRUICAO DE PAPEL CONFIDENCIAL",
+        "SOLICITAR SERVICOS DE CHAVEIRO",
+        "SOLICITACOES DE ENVELOPE"
+    ],
+    "Data": [
+        "14/12/2022 12:32",
+        "14/12/2022 12:36",
+        "14/12/2022 12:59",
+        "16/03/2023 15:27",
+        "16/03/2023 15:41"
+    ],
+    "Estado": [
+        "INICIAL PADR\u00c3O",
+        "INICIAL PADR\u00c3O",
+        "INICIAL PADR\u00c3O",
+        "SOLICITA\u00c7\u00c3O CONVERTIDA EM OS",
+        "INICIAL PADR\u00c3O"
+    ]
+}

@@ -1,0 +1,77 @@
+{% extends "base.html" %} {% block title %}Nova Solicitação{% endblock %} {% block
+  content %}
+<h3 align="center">Análise de Risco da Tarefa</h5>
+
+<form method="POST">
+  <div>
+    <h5>Estou treinado para realizar esta tarefa, sei fazer?</h5>
+    <label>
+      <input type="radio" name="gender" value="male">
+      Sim
+    </label>
+    
+    <label>
+      <input type="radio" name="gender" value="female">
+      Não
+    </label>
+  </div>
+
+  <div>
+    <h5>Os equipamentos foram bloqueados com cadeados?</h5>
+    <label>
+      <input type="radio" name="gender2" value="male">
+      Sim
+    </label>
+    
+    <label>
+      <input type="radio" name="gender2" value="female">
+      Não
+    </label>
+    
+    <label>
+      <input type="radio" name="gender2" value="female">
+      Não se aplica
+    </label>
+  </div>
+
+  <div>
+    <h5>Você possui os EPI's necessários?</h5>
+    <label>
+      <input type="radio" name="gender3" value="male">
+      Sim
+    </label>
+    
+    <label>
+      <input type="radio" name="gender3" value="female">
+      Não
+    </label>
+  </div>
+
+  <div>
+    <h5>As ferramentas estão em boas condições?</h5>
+    <label>
+      <input type="radio" name="gender4" value="male">
+      Sim
+    </label>
+    
+    <label>
+      <input type="radio" name="gender4" value="female">
+      Não
+    </label>
+  </div>
+
+  </br>
+
+    <a href="/formulario">
+      <div class="d-grid gap-2 col-6 mx-auto">
+          <button
+            id="button"
+            class="btn btn-primary btn-lg"
+            type="submit"
+          >OK</button>
+      </div>
+    </a>
+  </div>
+</form>
+
+{% endblock %}
