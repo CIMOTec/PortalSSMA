@@ -22,25 +22,6 @@ def home():
     return render_template("home.html", user=current_user, requesterName=session['requesterName'])
 
 
-@views.route('/dashboard', methods=['GET'])
-@login_required
-def dashboard():
-    return render_template("dashboard.html", user=current_user, abertas=value_dict["Abertas"][0], executando=value_dict["EmExecucao"][0], fechadas=value_dict["Fechadas"][0], recusadas=value_dict["Recusadas"][0])
-
-
-@views.route('/alterar', methods=['GET', 'POST'])
-@login_required
-def alterar():
-    return render_template("alterar.html", user=current_user,
-                           requester=session.get('requester'),
-                           requesterName=session.get('requesterName'),
-                           email=session.get('email'), asset=session.get('asset'),
-                           assetName=session.get('assetName'),
-                           costCenter=session.get('costCenter'),
-                           costCenterName=session.get('costCenterName'),
-                           departmentName=session.get('departmentName'))
-
-
 @views.route('/novaSolicitacao', methods=['GET', 'POST'])
 @login_required
 def novaSolicitacao():
