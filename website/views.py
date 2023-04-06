@@ -16,25 +16,25 @@ requests.packages.urllib3.disable_warnings()
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
 
 
-@views.route('/', methods=['GET', 'POST'])
+@views.route('/', methods=['GET'])
 @login_required
 def home():
     return render_template("home.html", user=current_user, requesterName=session['requesterName'])
 
 
-@views.route('/novaSolicitacao', methods=['GET', 'POST'])
+@views.route('/novaSolicitacao', methods=['GET'])
 @login_required
 def novaSolicitacao():
     return render_template("novaSolicitacao.html", user=current_user)
 
 
-@views.route('/formulario', methods=['GET', 'POST'])
+@views.route('/formulario', methods=['GET'])
 @login_required
 def formulario():
     return render_template('formulario.html', user=current_user)
 
 
-@views.route('/riscos', methods=['POST', 'GET'])
+@views.route('/riscos', methods=['GET'])
 @login_required
 def closing():
     return render_template("riscos.html", user=current_user)
