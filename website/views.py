@@ -19,7 +19,7 @@ requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    return render_template("home.html", user=current_user, requesterName=session['requesterName'])
+    return render_template("home.html", user=current_user)
 
 
 @views.route('/novaSolicitacao', methods=['GET', 'POST'])
