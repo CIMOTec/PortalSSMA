@@ -34,15 +34,34 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-@views.route('/novaSolicitacao', methods=['GET'])
+@views.route('/novaSolicitacao', methods=['GET', 'POST'])
 @login_required
 def novaSolicitacao():
+    if request.method == 'POST':
+        # esse é o comando utilizado pra pegar as informações preenchidas no formulário
+        print(request.form.get('treino'))
+        print(request.form.get('equipBloq'))
+        print(request.form.get('possuiEPI'))
+        print(request.form.get('condFerramenta'))
+        return render_template("formulario.html", user=current_user)
+
     return render_template("novaSolicitacao.html", user=current_user)
 
 
-@views.route('/formulario', methods=['GET'])
+@views.route('/formulario', methods=['GET', 'POST'])
 @login_required
 def formulario():
+    if request.method == 'POST':
+        # esse é o comando utilizado pra pegar as informações preenchidas no formulário
+        print(request.form.get('ferrManual'))
+        print(request.form.get('ferrPneumatica'))
+        print(request.form.get('escada'))
+        print(request.form.get('furadeira'))
+        print(request.form.get('lixadeira'))
+        print(request.form.get('solda'))
+        print(request.form.get('corte'))
+        return render_template("riscos.html", user=current_user)
+    
     return render_template('formulario.html', user=current_user)
 
 
