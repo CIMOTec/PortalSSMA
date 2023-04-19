@@ -15,6 +15,18 @@ views = Blueprint('views', __name__)
 requests.packages.urllib3.disable_warnings()
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
 
+"""
+Este código é a base do backend, tudo roda a partir daqui. As views criam a lógica que vai rodar
+por trás do formulário. Cada uma delas aponta para um arquivo .html diferente e cada um desses
+arquivos é construído na pasta templates.
+
+É importante também usar os métodos corretos para cada formulário (GET, POST) para não crashar.
+
+Caso sejam necessários scripts em Javascript, estes ficam na pasta static, junto com os arquivos
+CSS.
+
+Temos também o models.py, o auth.py, o __init__.py e o app.py, cada um com suas funcionalidades.
+"""
 
 @views.route('/', methods=['GET'])
 @login_required
@@ -36,5 +48,11 @@ def formulario():
 
 @views.route('/riscos', methods=['GET'])
 @login_required
-def closing():
+def riscos():
     return render_template("riscos.html", user=current_user)
+
+
+@views.route('/closing', methods=['GET'])
+@login_required
+def closing():
+    return render_template("closing.html", user=current_user)
