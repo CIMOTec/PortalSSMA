@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, session
 import requests
 from flask_login import login_required, current_user
+import psycopg2
 import pandas as pd
 from datetime import datetime
 from bs4 import BeautifulSoup
 import lxml
 from . import db
+from .creds import *
 from .models import convertData, findValue, findCustomValue, convertText
 import unicodedata
 import json
@@ -127,4 +129,7 @@ def riscos():
 @views.route('/closing', methods=['GET'])
 @login_required
 def closing():
+    conn = psycopg2.connect(host = dbHost, database=dbName, user=dbUser, password=dbPass)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO your_table (column1, column2) VALUES (%s, %s)", (data['value1'], data['value2']))
     return render_template("closing.html", user=current_user)
