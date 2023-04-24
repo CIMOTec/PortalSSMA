@@ -129,7 +129,7 @@ def riscos():
 @views.route('/closing', methods=['GET'])
 @login_required
 def closing():
-    conn = psycopg2.connect(host = dbHost, database=dbName, user=dbUser, password=dbPass)
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO your_table (column1, column2) VALUES (%s, %s)", (data['value1'], data['value2']))
+    # conn = psycopg2.connect(host = dbHost, database=dbName, user=dbUser, password=dbPass)
+    # cursor = conn.cursor()
+    # cursor.execute("INSERT INTO your_table (column1, column2) VALUES (%s, %s)", (data['value1'], data['value2']))
     return render_template("closing.html", user=current_user)
