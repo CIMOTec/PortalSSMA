@@ -129,10 +129,3 @@ def findCustomValue(validator):
         resposta = "SGER007"
 
     return resposta
-
-def postRequest(headers, data):
-    lock = threading.Lock()
-    request_queue = queue.Queue()
-    with lock:
-        if not request_queue.empty():
-            response = requests.post(url, headers=headers, data=data)
