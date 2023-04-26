@@ -123,6 +123,7 @@ def riscos():
         print(request.form.get('ruido'))
         print(request.form.get('outros'))
         return redirect(url_for('views.closing'))
+    
     return render_template("riscos.html", user=current_user)
 
 
