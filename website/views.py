@@ -149,14 +149,15 @@ def closing():
     conn = psycopg2.connect(host=dbHost, database=dbName,
                             user=dbUser, password=dbPass)
     cursor = conn.cursor()
-    print(session.get('ansList3'))
 
-    # for key, value in session.get('ansList3'):
+    workList = session.get('ansList3')
+    for key in workList:
+        print(key, workList[key])
+
+    # for key, value in workList:
     #     tripaColuna = str(tripaColuna) + (',') + str(key)
     #     tripaDado = str(tripaDado) + (',') + str(value)
 
-    cursor.execute(
-        # f"INSERT INTO riscospotenciais ({tripaColuna},'codriscos','codart') VALUES ({tripaDado},{session.get('codriscos')},{session.get('codart')})")
-        f"INSERT INTO riscospotenciais (codriscos) VALUES {session.get('codriscos')}")
+    # cursor.execute(f"INSERT INTO riscospotenciais ({tripaColuna},'codriscos','codart') VALUES ({tripaDado},{session.get('codriscos')},{session.get('codart')})")
 
     return render_template("closing.html", user=current_user)
