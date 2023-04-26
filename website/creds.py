@@ -1,4 +1,4 @@
 dbHost = 'database-2.co1ve7dsfmln.us-east-1.rds.amazonaws.com'
-dbName = 'database-2'
+dbName = 'postgres'
 dbUser = 'cimomaster'
 dbPass = 'vivante123'

@@ -6,61 +6,57 @@ content %}
     <div>
         <div>
             <label>
-                <input type="checkbox" name="ferrmanual" value="yes">
+                <input type="checkbox" name="ferrmanual" value="TRUE">
                 Ferramentas Manuais
             </label>
         </div>
 
         <div>
             <label>
-                <input type="checkbox" name="ferrpneumatica" value="yes">
+                <input type="checkbox" name="ferrpneumatica" value="TRUE">
                 Ferramenta Pneumática
             </label>
         </div>
 
         <div>
             <label>
-                <input type="checkbox" name="escada" value="yes">
+                <input type="checkbox" name="escada" value="TRUE">
                 Escada
             </label>
 
-        <div>
-            <label>
-                <input type="checkbox" name="furadeira" value="yes">
-                Furadeira
-            </label>
-        </div>
-
-        <div>
-            <label>
-                <input type="checkbox" name="lixadeira" value="yes">
-                Lixadeira
-            </label>
-        </div>
-
-        <div>
-            <label>
-                <input type="checkbox" name="solda" value="yes">
-                Máquina de Solda
-            </label>
-        </div>
-
-        <div>
-            <label>
-                <input type="checkbox" name="oxicorte" value="yes">
-                Aparelho de Oxi Corte
-            </label>
-        </div>
-
-        <a href="/riscos">
-            <div class="d-grid gap-2 col-6 mx-auto">
-                <button
-                id="button"
-                class="btn btn-primary btn-lg"
-                type="submit"
-                >OK</button>
+            <div>
+                <label>
+                    <input type="checkbox" name="furadeira" value="TRUE">
+                    Furadeira
+                </label>
             </div>
-        </a>
-    </div>
+
+            <div>
+                <label>
+                    <input type="checkbox" name="lixadeira" value="TRUE">
+                    Lixadeira
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="checkbox" name="solda" value="TRUE">
+                    Máquina de Solda
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <input type="checkbox" name="oxicorte" value="TRUE">
+                    Aparelho de Oxi Corte
+                </label>
+            </div>
+
+            <a href="/riscos">
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <button id="button" class="btn btn-primary btn-lg" type="submit">OK</button>
+                </div>
+            </a>
+        </div>
 </form>
 {% endblock %}
