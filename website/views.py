@@ -33,6 +33,29 @@ Temos também o models.py, o auth.py, o __init__.py e o app.py, cada um com suas
 """
 
 
+def prepList(workList):
+    tripaColuna = []
+    tripaDado = []
+
+    for key in workList:
+        print(f"{key} : {workList[key]}")
+        tripaColuna.append(key)
+        if workList[key] == None:
+            tripaDado.append('FALSE')
+        elif workList[key] == '' and key == 'outros':
+            tripaDado.append("'Semoutros'")
+        elif key == 'outros':
+            tripaDado.append(f"{str(workList[key])}")
+        else:
+            tripaDado.append(workList[key])
+
+    separador = ', '
+    tripaColuna = separador.join(tripaColuna)
+    tripaDado = separador.join(tripaDado)
+    tripaDado = f"{tripaDado}"
+    return tripaColuna, tripaDado
+
+
 @views.route('/', methods=['GET'])
 @login_required
 def home():
@@ -64,13 +87,13 @@ def formulario():
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
         session['ansList2'] = dict(
-            ferrManual=request.form.get('ferrManual'),
-            ferrPneumatica=request.form.get('ferrPneumatica'),
+            ferrmanual=request.form.get('ferrmanual'),
+            ferrpneumatica=request.form.get('ferrpneumatica'),
             escada=request.form.get('escada'),
             furadeira=request.form.get('furadeira'),
             lixadeira=request.form.get('lixadeira'),
             solda=request.form.get('solda'),
-            corte=request.form.get('corte'))
+            oxicorte=request.form.get('oxicorte'))
 
         session['codrecursos'] = str(uuid.uuid4())
         return redirect(url_for('views.riscos'))
@@ -150,29 +173,21 @@ def closing():
                             user=dbUser, password=dbPass)
     cursor = conn.cursor()
 
-    tripaColuna = []
-    tripaDado = []
+    tripaArt, tripaArtCol = prepList(session.get('ansList1'))
+    tripaRec, tripaRecCol = prepList(session.get('ansList2'))
+    tripaRiscos, tripaRiscosCol = prepList(session.get('ansList3'))
 
-    workList = session.get('ansList3')
+    css1 = f"INSERT INTO art ({tripaArt}, codart, codrecursos, coddeclarante, codriscos) VALUES ({tripaArtCol},'{session.get('codart')}','{session.get('codrecursos')}', '1','{session.get('codriscos')}');"
+    css2 = f"INSERT INTO recursosmateriais ({tripaRec}, codrecursos) VALUES ({tripaRecCol},'{session.get('codrecursos')}');"
+    css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}, codriscos) VALUES ({tripaRiscosCol},'{session.get('codriscos')}');"
 
-    for key in workList:
-        print(f"{key} : {workList[key]}")
-        tripaColuna.append(key)
-        if workList[key] == None:
-            tripaDado.append('FALSE')
-        elif workList[key] == '' and key == 'outros':
-            tripaDado.append("Semoutros")
-        elif key == 'outros':
-            tripaDado.append(f"{str(workList[key])}")
-        else:
-            tripaDado.append(workList[key])
+    print(f"Art: {css1}")
+    print(f"Recursos Materiais: {css2}")
+    print(f"Riscos Potenciais: {css3}")
 
-    separador = ', '
-    tripaColuna = separador.join(tripaColuna)
-    tripaDado = separador.join(tripaDado)
-    tripaDado = f"{tripaDado}"
-
-    cursor.execute(
-        f"INSERT INTO riscospontenciais ({tripaColuna}, codriscos, codart) VALUES ({tripaDado},'{session.get('codriscos')}','{session.get('codart')}');")
+    cursor.execute(css3)
+    cursor.execute(css2)
+    cursor.execute(css1)
+    conn.close()
 
     return render_template("closing.html", user=current_user)
