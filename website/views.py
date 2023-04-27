@@ -50,7 +50,7 @@ def novaSolicitacao():
             possuiepi=request.form.get('possuiepi'),
             condferramenta=request.form.get('condferramenta'))
 
-        session['codart'] = uuid.uuid4()
+        session['codart'] = str(uuid.uuid4())
 
         return redirect(url_for('views.formulario'))
 
@@ -72,7 +72,7 @@ def formulario():
             solda=request.form.get('solda'),
             corte=request.form.get('corte'))
 
-        session['codrecursos'] = uuid.uuid4()
+        session['codrecursos'] = str(uuid.uuid4())
         return redirect(url_for('views.riscos'))
 
     return render_template('formulario.html', user=current_user)
@@ -84,7 +84,7 @@ def riscos():
     if request.method == 'POST':
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
-        session['codriscos'] = uuid.uuid4()
+        session['codriscos'] = str(uuid.uuid4())
         session['ansList3'] = dict(
             aprisionamento=request.form.get('aprisionamento'),
             projecao=request.form.get('projecao'),
@@ -150,14 +150,29 @@ def closing():
                             user=dbUser, password=dbPass)
     cursor = conn.cursor()
 
+    tripaColuna = []
+    tripaDado = []
+
     workList = session.get('ansList3')
+
     for key in workList:
-        print(key, workList[key])
+        print(f"{key} : {workList[key]}")
+        tripaColuna.append(key)
+        if workList[key] == None:
+            tripaDado.append('FALSE')
+        elif workList[key] == '' and key == 'outros':
+            tripaDado.append("Semoutros")
+        elif key == 'outros':
+            tripaDado.append(f"{str(workList[key])}")
+        else:
+            tripaDado.append(workList[key])
 
-    # for key, value in workList:
-    #     tripaColuna = str(tripaColuna) + (',') + str(key)
-    #     tripaDado = str(tripaDado) + (',') + str(value)
+    separador = ', '
+    tripaColuna = separador.join(tripaColuna)
+    tripaDado = separador.join(tripaDado)
+    tripaDado = f"{tripaDado}"
 
-    # cursor.execute(f"INSERT INTO riscospotenciais ({tripaColuna},'codriscos','codart') VALUES ({tripaDado},{session.get('codriscos')},{session.get('codart')})")
+    cursor.execute(
+        f"INSERT INTO riscospontenciais ({tripaColuna}, codriscos, codart) VALUES ({tripaDado},'{session.get('codriscos')}','{session.get('codart')}');")
 
     return render_template("closing.html", user=current_user)
