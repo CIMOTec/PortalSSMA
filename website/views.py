@@ -188,6 +188,7 @@ def closing():
     cursor.execute(css3)
     cursor.execute(css2)
     cursor.execute(css1)
+    conn.commit()
     conn.close()
 
     return render_template("closing.html", user=current_user)
