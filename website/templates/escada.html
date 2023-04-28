@@ -1,8 +1,8 @@
 {% extends "base.html" %} {% block title %}Escada{% endblock %} {% block
 content %}
-<h3 align="center">Recursos Materiais Necessários</h3>
+<h3 align="center">Check List - Utilização de Escada</h3>
 
-<script>
+<!-- <script>
     document.getElementById("patamar").style.display = "none";
     document.getElementById("topo").style.display = "none";
     document.getElementById("catraca").style.display = "none";
@@ -29,7 +29,7 @@ content %}
         conditionField.addEventListener("change", showForm);
         showForm();
     };
-</script>
+</script> -->
 
 <form method="POST">
     <div>
@@ -92,14 +92,14 @@ content %}
 
         <div>
             <label>
-                <input type="checkbox" name="patamar" id="patamar" value="TRUE" style="display:none;">
+                <input type="checkbox" name="patamar" id="patamar" value="TRUE">
                 Patamar Superior: Solto, amassado, ausente?
             </label>
         </div>
 
         <div>
             <label>
-                <input type="checkbox" name="topo" id="topo" value="TRUE" style="display:none;">
+                <input type="checkbox" name="topo" id="topo" value="TRUE">
                 Topo: Rachado, solto, ausente?
             </label>
         </div>
@@ -108,14 +108,14 @@ content %}
 
         <div>
             <label>
-                <input type="checkbox" name="catraca" id="catraca" value="TRUE" style="display:none;">
+                <input type="checkbox" name="catraca" id="catraca" value="TRUE">
                 Catraca de Segurança: Solta, amassada, quebrada?
             </label>
         </div>
 
         <div>
             <label>
-                <input type="checkbox" name="cordapolia" id="cordapolia" value="TRUE" style="display:none;">
+                <input type="checkbox" name="cordapolia" id="cordapolia" value="TRUE">
                 Corda/Polia: Solta, dobrada ou quebrada?
             </label>
         </div>
@@ -142,7 +142,20 @@ content %}
             </label>
         </div>
 
-        <a href="/riscos">
+        <div>
+            <h5>Ação:</h5>
+            <label>
+                <input type="radio" name="escadatipo" value="FALSE">
+                Escada danificada, não utilizar
+            </label>
+
+            <label>
+                <input type="radio" name="escadatipo" value="TRUE">
+                Escada está em boas condições de uso
+            </label>
+        </div>
+
+        <a>
             <div class="d-grid gap-2 col-6 mx-auto">
                 <button id="button" class="btn btn-primary btn-lg" type="submit">OK</button>
             </div>

@@ -83,6 +83,12 @@ def novaSolicitacao():
 @views.route('/escada', methods=['GET', 'POST'])
 @login_required
 def escada():
+    if request.method == 'POST':
+        if session.get('ansList1'):
+            return redirect(url_for('views.riscos'))
+        else:
+            return redirect(url_for('views.home'))
+        
     return render_template("escada.html", user=current_user)
 
 
@@ -102,7 +108,11 @@ def formulario():
             oxicorte=request.form.get('oxicorte'))
 
         session['codrecursos'] = str(uuid.uuid4())
-        return redirect(url_for('views.riscos'))
+
+        if request.form.get('escada') == 'TRUE':
+            return redirect(url_for('views.escada'))
+        else:
+            return redirect(url_for('views.riscos'))
 
     return render_template('formulario.html', user=current_user)
 
@@ -196,5 +206,6 @@ def closing():
     cursor.execute(css1)
     conn.commit()
     conn.close()
+    session.clear()
 
     return render_template("closing.html", user=current_user)
