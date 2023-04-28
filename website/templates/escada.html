@@ -1,0 +1,153 @@
+{% extends "base.html" %} {% block title %}Escada{% endblock %} {% block
+content %}
+<h3 align="center">Recursos Materiais Necessários</h3>
+
+<script>
+    document.getElementById("patamar").style.display = "none";
+    document.getElementById("topo").style.display = "none";
+    document.getElementById("catraca").style.display = "none";
+    document.getElementById("cordapolia").style.display = "none";
+
+    function showForm() {
+        var condition = document.getElementByName("escadatipo").value;
+        if (condition == "tesoura") {
+            document.getElementByName("patamar").style.display = "block";
+            document.getElementByName("topo").style.display = "block";
+            document.getElementByName("catraca").style.display = "none";
+            document.getElementByName("cordapolia").style.display = "none";
+
+        } else {
+            document.getElementByName("patamar").style.display = "none";
+            document.getElementByName("topo").style.display = "none";
+            document.getElementByName("catraca").style.display = "block";
+            document.getElementByName("cordapolia").style.display = "block";
+        }
+    }
+
+    window.onload = function () {
+        var conditionField = document.getElementByName("escadatipo");
+        conditionField.addEventListener("change", showForm);
+        showForm();
+    };
+</script>
+
+<form method="POST">
+    <div>
+
+        <div>
+            <h5>Qual o tipo de escada?</h5>
+            <label>
+                <input type="radio" name="escadatipo" value="tesoura">
+                Tesoura
+            </label>
+
+            <label>
+                <input type="radio" name="escadatipo" value="ext">
+                Extensível
+            </label>
+        </div>
+
+        <!-- BLOCO PADRÃO -->
+
+        <div>
+            <label>
+                <input type="textarea" name="tamanho" placeholder="Tamanho">
+                Tamanho
+            </label>
+        </div>
+
+
+        <div>
+            <label for="dropdowntipo">Tipo: </label>
+            <select id="dropdowntipo">
+                <option value="fibra">Fibra de Vidro</option>
+                <option value="aluminio">Alumínio</option>
+                <option value="madeira">Madeira</option>
+            </select>
+        </div>
+
+
+        <div>
+            <label>
+                <input type="checkbox" name="degraus" value="TRUE">
+                Degraus: Solto, rachado, amassado ou ausente?
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="montante" value="TRUE">
+                Montantes: Rachado, amassado, desgastado
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="etiquetaescada" value="TRUE">
+                Etiqueta: Falta ou não legível
+            </label>
+        </div>
+
+        <!-- BLOCO ESCADA TESOURA -->
+
+        <div>
+            <label>
+                <input type="checkbox" name="patamar" id="patamar" value="TRUE" style="display:none;">
+                Patamar Superior: Solto, amassado, ausente?
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="topo" id="topo" value="TRUE" style="display:none;">
+                Topo: Rachado, solto, ausente?
+            </label>
+        </div>
+
+        <!-- BLOCO ESCADA EXTENSÍVEL-->
+
+        <div>
+            <label>
+                <input type="checkbox" name="catraca" id="catraca" value="TRUE" style="display:none;">
+                Catraca de Segurança: Solta, amassada, quebrada?
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="cordapolia" id="cordapolia" value="TRUE" style="display:none;">
+                Corda/Polia: Solta, dobrada ou quebrada?
+            </label>
+        </div>
+
+        <!-- MAIS UM BLOCO PADRÃO-->
+
+        <div>
+            <label>
+                <input type="checkbox" name="sapatasescada" value="TRUE">
+                Sapatas: Solta, amassada, quebrada?
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="geralescada" value="TRUE">
+                Geral: Solta, dobrada ou quebrada?
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="textarea" name="outrosescada" placeholder="Outros">
+            </label>
+        </div>
+
+        <a href="/riscos">
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button id="button" class="btn btn-primary btn-lg" type="submit">OK</button>
+            </div>
+        </a>
+    </div>
+</form>
+
+{% endblock %}

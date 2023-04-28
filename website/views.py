@@ -80,6 +80,12 @@ def novaSolicitacao():
     return render_template("novaSolicitacao.html", user=current_user)
 
 
+@views.route('/escada', methods=['GET', 'POST'])
+@login_required
+def escada():
+    return render_template("escada.html", user=current_user)
+
+
 @views.route('/formulario', methods=['GET', 'POST'])
 @login_required
 def formulario():
