@@ -67,11 +67,16 @@ def home():
 def novaSolicitacao():
     if request.method == 'POST':
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
-        session['ansList1'] = dict(
+        session['ansListArt'] = dict(
             treinado=request.form.get('treinado'),
             equipbloqueado=request.form.get('equipbloqueado'),
             possuiepi=request.form.get('possuiepi'),
-            condferramenta=request.form.get('condferramenta'))
+            condferramenta=request.form.get('condferramenta'),
+            tarefa=f"'{request.form.get('tarefa')}'",
+            local=f"'{request.form.get('local')}'",
+            contrato=f"'{request.form.get('contrato')}'",
+            datauser=convertData(request.form.get('datauser')),
+            ativrotina=request.form.get('ativrotina'))
 
         session['codart'] = str(uuid.uuid4())
 
@@ -84,7 +89,19 @@ def novaSolicitacao():
 @login_required
 def escada():
     if request.method == 'POST':
-        if session.get('ansList1'):
+        # AQUI PRECISO INSERIR OS DETALHES DO INSERT
+        # session['ansListEscada'] = dict(
+        #     tamanho=f"'{request.form.get('tamanho')}'",
+        #     materialescada=request.form.get('dropdowntipo'),
+        #     escada=request.form.get('escada'),
+        #     furadeira=request.form.get('furadeira'),
+        #     lixadeira=request.form.get('lixadeira'),
+        #     solda=request.form.get('solda'),
+        #     oxicorte=request.form.get('oxicorte'))
+
+        # session['codrecursos'] = str(uuid.uuid4())
+
+        if session.get('ansListArt'):
             return redirect(url_for('views.riscos'))
         else:
             return redirect(url_for('views.home'))
@@ -98,7 +115,7 @@ def formulario():
     if request.method == 'POST':
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
-        session['ansList2'] = dict(
+        session['ansListRec'] = dict(
             ferrmanual=request.form.get('ferrmanual'),
             ferrpneumatica=request.form.get('ferrpneumatica'),
             escada=request.form.get('escada'),
@@ -124,7 +141,7 @@ def riscos():
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
         session['codriscos'] = str(uuid.uuid4())
-        session['ansList3'] = dict(
+        session['ansListRiscos'] = dict(
             aprisionamento=request.form.get('aprisionamento'),
             projecao=request.form.get('projecao'),
             sistema=request.form.get('sistema'),
@@ -189,11 +206,11 @@ def closing():
                             user=dbUser, password=dbPass)
     cursor = conn.cursor()
 
-    tripaArt, tripaArtCol = prepList(session.get('ansList1'))
-    tripaRec, tripaRecCol = prepList(session.get('ansList2'))
-    tripaRiscos, tripaRiscosCol = prepList(session.get('ansList3'))
+    tripaArt, tripaArtCol = prepList(session.get('ansListArt'))
+    tripaRec, tripaRecCol = prepList(session.get('ansListRec'))
+    tripaRiscos, tripaRiscosCol = prepList(session.get('ansListRiscos'))
 
-    css1 = f"INSERT INTO art ({tripaArt}, codart, codrecursos, coddeclarante, codriscos) VALUES ({tripaArtCol},'{session.get('codart')}','{session.get('codrecursos')}', '1','{session.get('codriscos')}');"
+    css1 = f"INSERT INTO art ({tripaArt}, codart, codrecursos, codriscos) VALUES ({tripaArtCol},'{session.get('codart')}','{session.get('codrecursos')}','{session.get('codriscos')}');"
     css2 = f"INSERT INTO recursosmateriais ({tripaRec}, codrecursos) VALUES ({tripaRecCol},'{session.get('codrecursos')}');"
     css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}, codriscos) VALUES ({tripaRiscosCol},'{session.get('codriscos')}');"
 

@@ -29,8 +29,8 @@ def convertData(data):
     dia = data[8:10]
     hora = data[11:13]
     minutos = data[14:16]
-    resp = f"{dia}/{mes}/{ano} {hora}:{minutos}"
-    return int(resp)
+    resp = f"'{ano}-{mes}-{dia} {hora}:{minutos}:00'"
+    return resp
 
 
 def convertText(palavra):
