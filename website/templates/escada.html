@@ -1,66 +1,38 @@
 {% extends "base.html" %} {% block title %}Escada{% endblock %} {% block
 content %}
-<h3 align="center">Check List - Utilização de Escada</h3>
-
-<!-- <script>
-    document.getElementById("patamar").style.display = "none";
-    document.getElementById("topo").style.display = "none";
-    document.getElementById("catraca").style.display = "none";
-    document.getElementById("cordapolia").style.display = "none";
-
-    function showForm() {
-        var condition = document.getElementByName("escadatipo").value;
-        if (condition == "tesoura") {
-            document.getElementByName("patamar").style.display = "block";
-            document.getElementByName("topo").style.display = "block";
-            document.getElementByName("catraca").style.display = "none";
-            document.getElementByName("cordapolia").style.display = "none";
-
-        } else {
-            document.getElementByName("patamar").style.display = "none";
-            document.getElementByName("topo").style.display = "none";
-            document.getElementByName("catraca").style.display = "block";
-            document.getElementByName("cordapolia").style.display = "block";
-        }
-    }
-
-    window.onload = function () {
-        var conditionField = document.getElementByName("escadatipo");
-        conditionField.addEventListener("change", showForm);
-        showForm();
-    };
-</script> -->
+<h3>Check List - Utilização de Escada</h3>
 
 <form method="POST">
     <div>
-
         <div>
             <h5>Qual o tipo de escada?</h5>
-            <label>
-                <input type="radio" name="escadatipo" value="tesoura">
-                Tesoura
-            </label>
+            <div class="container">
+                <label class="labelcheck">
+                    <input type="radio" id="escadatipot" name="escadatipo" value="tesoura"/>
+                    <span class="spanradio">Tesoura</span>
+                </label>
 
-            <label>
-                <input type="radio" name="escadatipo" value="ext">
-                Extensível
-            </label>
-        </div>
+                <label class="labelcheck">
+                    <input type="radio" id="escadatipoe" name="escadatipo" value="ext"/>
+                    <span class="spanradio">Extensível</span>
+                </label>
+            </div>
 
         <!-- BLOCO PADRÃO -->
 
-        <div>
-            <label>
-                <input type="textarea" name="tamanhoescada" placeholder="Tamanho (em metros)">
-            </label>
+        <div class="outerBox">
+            <div class="inputBox">
+                <input type="text" name="tamanhoescada" required="required">
+                <span>Tamanho (em metros)</span>
+            </div>
         </div>
 
-        <div>
-            <label>
-                <input type="textarea" name="numescada" placeholder="Nº da Escada">
-            </label>
+        <div class="outerBox">
+            <div class="inputBox">
+                <input type="text" name="numescada" required="required">
+                <span>Nº da Escada</span>
+            </div>
         </div>
-
 
         <div>
             <label for="materialescada">Tipo: </label>
@@ -71,92 +43,110 @@ content %}
             </select>
         </div>
 
-
-        <div>
-            <label>
-                <input type="checkbox" name="degraus" value="TRUE">
-                Degraus: Solto, rachado, amassado ou ausente?
-            </label>
+        <div class="containercheck">
+            <div>
+                <label>
+                    <input type="checkbox" name="degraus" id="degraus" value="TRUE">
+                    <span>Degraus: Solto, rachado, amassado ou ausente?</span>
+                </label>
+            </div>
         </div>
 
-        <div>
-            <label>
-                <input type="checkbox" name="montantes" value="TRUE">
-                Montantes: Rachado, amassado, desgastado
-            </label>
+        <div class="containercheck">
+            <div>
+                <label>
+                    <input type="checkbox" name="montantes" id="montantes" value="TRUE">
+                    <span>Montantes: Rachado, amassado, desgastado</span>
+                </label>
+            </div>
         </div>
 
-        <div>
-            <label>
-                <input type="checkbox" name="etiqueta" value="TRUE">
-                Etiqueta: Falta ou não legível
-            </label>
+        <div class="containercheck">
+            <div>
+                <label>
+                    <input type="checkbox" name="etiqueta" id="etiqueta" value="TRUE">
+                    <span>Etiqueta: Falta ou não legível</span>
+                </label>
+            </div>
         </div>
 
         <!-- BLOCO ESCADA TESOURA -->
 
-        <div>
-            <label>
-                <input type="checkbox" name="patamarsuperior" id="patamarsuperior" value="TRUE">
-                Patamar Superior: Solto, amassado, ausente?
-            </label>
+        <div class="containercheck">
+            <div>
+                <label>
+                    <input type="checkbox" name="patamarsuperior" id="patamarsuperior" value="TRUE">
+                    <span>Patamar Superior: Solto, amassado, ausente?</span>
+                </label>
+            </div>
         </div>
 
-        <div>
-            <label>
-                <input type="checkbox" name="topo" id="topo" value="TRUE">
-                Topo: Rachado, solto, ausente?
-            </label>
+        <div class="containercheck">
+            <div>
+                <label>
+                    <input type="checkbox" name="topo" id="topo" value="TRUE">
+                    <span>Topo: Rachado, solto, ausente?</span>
+                </label>
+            </div>
         </div>
 
         <!-- BLOCO ESCADA EXTENSÍVEL-->
 
-        <div>
-            <label>
-                <input type="checkbox" name="catracadeseguranca" id="catracadeseguranca" value="TRUE">
-                Catraca de Segurança: Solta, amassada, quebrada?
-            </label>
+        <div class="containercheck">
+            <div>
+                <label>
+                    <input type="checkbox" name="catracadeseguranca" id="catracadeseguranca" value="TRUE">
+                    <span>Catraca de Segurança: Solta, amassada, quebrada?</span>
+                </label>
+            </div>
         </div>
 
-        <div>
-            <label>
-                <input type="checkbox" name="cordapolia" id="cordapolia" value="TRUE">
-                Corda/Polia: Solta, dobrada ou quebrada?
-            </label>
+        <div class="containercheck">
+            <div>
+                <label>
+                    <input type="checkbox" name="cordapolia" id="cordapolia" value="TRUE">
+                    <span>Corda/Polia: Solta, dobrada ou quebrada?</span>
+                </label>
+            </div>
         </div>
 
         <!-- MAIS UM BLOCO PADRÃO-->
 
-        <div>
-            <label>
-                <input type="checkbox" name="sapatas" value="TRUE">
-                Sapatas: Solta, amassada, quebrada?
-            </label>
+        <div class="containercheck">
+            <div>
+                <label>
+                    <input type="checkbox" name="sapatas" id="sapatas" value="TRUE">
+                    <span>Sapatas: Solta, amassada, quebrada?</span>
+                </label>
+            </div>
         </div>
 
-        <div>
-            <label>
-                <input type="checkbox" name="geral" value="TRUE">
-                Geral: Solta, dobrada ou quebrada?
-            </label>
+        <div class="containercheck">
+            <div>
+                <label>
+                    <input type="checkbox" name="geral" id="geral" value="TRUE">
+                    <span>Geral: Solta, dobrada ou quebrada?</span>
+                </label>
+            </div>
         </div>
 
-        <div>
-            <label>
-                <input type="textarea" name="outros" placeholder="Outros">
-            </label>
+        <div class="outerBox">
+            <div class="inputBox">
+                <input type="text" name="outros" required="required">
+                <span>Outros</span>
+            </div>
         </div>
 
-        <div>
-            <h5>Ação:</h5>
-            <label>
-                <input type="radio" name="acao" value="FALSE">
-                Escada danificada, não utilizar
+        <h5>Ação:</h5>
+        <div class="container">
+            <label class="labelcheck">
+                <input type="radio" id="acaot" name="acao" value="TRUE"/>
+                <span class="spanradio">Escada está em boas condições de uso</span>
             </label>
 
-            <label>
-                <input type="radio" name="acao" value="TRUE">
-                Escada está em boas condições de uso
+            <label class="labelcheck">
+                <input type="radio" id="acaof" name="acao" value="FALSE"/>
+                <span class="spanradio">Escada danificada, não utilizar</span>
             </label>
         </div>
 

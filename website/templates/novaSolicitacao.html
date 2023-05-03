@@ -1,103 +1,108 @@
 {% extends "base.html" %} {% block title %}ART{% endblock %} {% block
 content %}
-<h3 align="center">Análise de Risco da Tarefa</h5>
+<h3>Análise de Risco da Tarefa</h3>
 
   <form method="POST">
-    <div name="main">
-      <div name="1st">
-        <div name="inner">
-          <label><input type="textarea" name="tarefa" placeholder="Tarefa" /></label>
-        </div>
 
-        <div name="inner">
-          <label><input type="textarea" name="local" placeholder="Local" /></label>
+      <div class="outerBox">
+        <div class="inputBox">
+            <input type="text" name="tarefa" required="required">
+            <span>Tarefa</span>
         </div>
+      </div>
 
-        <div name="inner">
-          <label><input type="textarea" name="contrato" placeholder="Contrato" /></label>
+      <div class="outerBox">
+        <div class="inputBox">
+            <input type="text" name="local" required="required">
+            <span>Local</span>
         </div>
+      </div>
 
-        <div name="inner">
-          <label><input type="textarea" name="numeroos" placeholder="Número da O.S." /></label>
+      <div class="outerBox">
+        <div class="inputBox">
+            <input type="text" name="contrato" required="required">
+            <span>Contrato</span>
         </div>
+      </div>
 
-        <div name="inner">
-          <label><input type="datetime-local" name="datauser" placeholder="Data" /></label>
+      <div class="outerBox">
+        <div class="inputBox">
+            <input type="text" name="numeroos" required="required">
+            <span>Número da O.S.</span>
         </div>
+      </div>
 
-        <div name="inner">
+      <div class="outerBox">
+        <div class="inputBox">
+            <input type="datetime-local" name="datauser" required="required" placeholder="">
+            <span>Data</span>
+        </div>
+      </div>
+
+        <div>
           <h5>Atividade Rotineira?</h5>
-          <label>
-            <input type="radio" name="ativrotina" value="TRUE">
-            Sim
-          </label>
+          <div class="container">
+              <label class="labelcheck">
+                  <input type="radio" id="ativrotinat" name="ativrotina" value="TRUE"/>
+                  <span class="spanradio">Sim</span>
+              </label>
+              <label class="labelcheck">
+                  <input type="radio" id="ativrotinaf" name="ativrotina" value="FALSE"/>
+                  <span class="spanradio">Não</span>
+              </label>
+          </div>
 
-          <label>
-            <input type="radio" name="ativrotina" value="FALSE">
-            Não
-          </label>
-        </div>
-      </div>
-
-      <div>
-        <div name="inner">
           <h5>Estou treinado para realizar esta tarefa, sei fazer?</h5>
-          <label>
-            <input type="radio" name="treinado" value="TRUE">
-            Sim
-          </label>
+          <div class="container">
+              <label class="labelcheck">
+                  <input type="radio" id="treinadot" name="treinado" value="TRUE"/>
+                  <span class="spanradio">Sim</span>
+              </label>
+              <label class="labelcheck">
+                  <input type="radio" id="treinadof" name="treinado" value="FALSE"/>
+                  <span class="spanradio">Não</span>
+              </label>
+          </div>
 
-          <label>
-            <input type="radio" name="treinado" value="FALSE">
-            Não
-          </label>
-        </div>
-
-        <div name="inner">
           <h5>Os equipamentos foram bloqueados com cadeados?</h5>
-          <label>
-            <input type="radio" name="equipbloqueado" value="TRUE">
-            Sim
-          </label>
+          <div class="container">
+              <label class="labelcheck">
+                  <input type="radio" id="equipbloqueadot" name="equipbloqueado" value="TRUE"/>
+                  <span class="spanradio">Sim</span>
+              </label>
+              <label class="labelcheck">
+                  <input type="radio" id="equipbloqueadof" name="equipbloqueado" value="FALSE"/>
+                  <span class="spanradio">Não</span>
+              </label>
+              <label class="labelcheck">
+                  <input type="radio" id="equipbloqueadof" name="equipbloqueado" value="FALSE"/>
+                  <span class="spanradio">Não se aplica</span>
+              </label>
+          </div>
 
-          <label>
-            <input type="radio" name="equipbloqueado" value="FALSE">
-            Não
-          </label>
-
-          <label>
-            <input type="radio" name="equipbloqueado" value="FALSE">
-            Não se aplica
-          </label>
-        </div>
-
-        <div name="inner">
           <h5>Você possui os EPI's necessários?</h5>
-          <label>
-            <input type="radio" name="possuiepi" value="TRUE">
-            Sim
-          </label>
+          <div class="container">
+              <label class="labelcheck">
+                  <input type="radio" id="possuiepit" name="possuiepi" value="TRUE"/>
+                  <span class="spanradio">Sim</span>
+              </label>
+              <label class="labelcheck">
+                  <input type="radio" id="possuiepif" name="possuiepi" value="FALSE"/>
+                  <span class="spanradio">Não</span>
+              </label>
+          </div>
 
-          <label>
-            <input type="radio" name="possuiepi" value="FALSE">
-            Não
-          </label>
-        </div>
-
-        <div name="inner">
           <h5>As ferramentas estão em boas condições?</h5>
-          <label>
-            <input type="radio" name="condferramenta" value="TRUE">
-            Sim
-          </label>
-
-          <label>
-            <input type="radio" name="condferramenta" value="FALSE">
-            Não
-          </label>
-        </div>
-      </div>
-    </div>
+          <div class="container">
+              <label class="labelcheck">
+                  <input type="radio" id="condferramentat" name="condferramenta" value="TRUE"/>
+                  <span class="spanradio">Sim</span>
+              </label>
+              <label class="labelcheck">
+                  <input type="radio" id="condferramentaf" name="condferramenta" value="FALSE"/>
+                  <span class="spanradio">Não</span>
+              </label>
+          </div>
     
     <a href="/formulario">
       <div class="d-grid gap-2 col-8 mx-auto">
