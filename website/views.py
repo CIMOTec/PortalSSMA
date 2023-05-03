@@ -287,9 +287,12 @@ def closing():
     cursor.execute(css3)
     cursor.execute(css2)
     cursor.execute(css1)
-    if css4 and css5:
+
+    try:
         cursor.execute(css4)
         cursor.execute(css5)
+    except UnboundLocalError:
+        pass
 
     conn.commit()
     conn.close()
