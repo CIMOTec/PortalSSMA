@@ -77,7 +77,7 @@ def novaSolicitacao():
             contrato=f"'{request.form.get('contrato')}'",
             datauser=convertData(request.form.get('datauser')),
             ativrotina=request.form.get('ativrotina'),
-            numeroos=request.form.get('numeroos'))
+            numeroos=f"'{request.form.get('numeroos')}'")
 
         session['codart'] = str(uuid.uuid4())
 
@@ -125,6 +125,7 @@ def escada():
         session['codescada'] = str(uuid.uuid4())
 
         if session.get('ansListArt'):
+            session['escadatipo'] = request.form.get('escadatipo')
             return redirect(url_for('views.riscos'))
         
         else:
@@ -258,6 +259,18 @@ def closing():
     css2 = f"INSERT INTO recursosmateriais ({tripaRec}, codrecursos) VALUES ({tripaRecCol},'{session.get('codrecursos')}');"
     css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}, codriscos) VALUES ({tripaRiscosCol},'{session.get('codriscos')}');"
 
+    if session.get('codescada'):
+        tripaEscada, tripaEscadaCol = prepList(session.get('ansListEscada'))
+        tripaEscada2, tripaEscadaCol2 = prepList(session.get('ansListEscadaTipo'))
+
+        css4 = f"INSERT INTO escadadados (codescada, codart, declarante, {tripaEscada}) VALUES ('{session.get('codescada')}', '{session.get('codart')}', '1', {tripaEscadaCol});"
+
+        if session.get('escadatipo') == 'tesoura':
+            css5 = f"INSERT INTO escadatesoura (codescada, {tripaEscada2}) VALUES ('{session.get('codescada')}', {tripaEscadaCol2});"
+        else:
+            css5 = f"INSERT INTO escadaextensível (codescada, {tripaEscada2}) VALUES ('{session.get('codescada')}', {tripaEscadaCol2});"
+
+
     print(f"Art: {css1}")
     print(f"Recursos Materiais: {css2}")
     print(f"Riscos Potenciais: {css3}")
@@ -265,6 +278,10 @@ def closing():
     cursor.execute(css3)
     cursor.execute(css2)
     cursor.execute(css1)
+    if css4 and css5:
+        cursor.execute(css4)
+        cursor.execute(css5)
+
     conn.commit()
     conn.close()
     session.clear()
