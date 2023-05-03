@@ -43,9 +43,9 @@ def prepList(workList):
         if workList[key] == None:
             tripaDado.append('FALSE')
         elif workList[key] == '' and key == 'outros':
-            tripaDado.append("'Semoutros'")
+            tripaDado.append("'Sem outros'")
         elif key == 'outros':
-            tripaDado.append(f"{str(workList[key])}")
+            tripaDado.append(f"'{str(workList[key])}'")
         else:
             tripaDado.append(workList[key])
 
@@ -76,7 +76,8 @@ def novaSolicitacao():
             local=f"'{request.form.get('local')}'",
             contrato=f"'{request.form.get('contrato')}'",
             datauser=convertData(request.form.get('datauser')),
-            ativrotina=request.form.get('ativrotina'))
+            ativrotina=request.form.get('ativrotina'),
+            numeroos=request.form.get('numeroos'))
 
         session['codart'] = str(uuid.uuid4())
 
@@ -89,22 +90,65 @@ def novaSolicitacao():
 @login_required
 def escada():
     if request.method == 'POST':
-        # AQUI PRECISO INSERIR OS DETALHES DO INSERT
-        # session['ansListEscada'] = dict(
-        #     tamanho=f"'{request.form.get('tamanho')}'",
-        #     materialescada=request.form.get('dropdowntipo'),
-        #     escada=request.form.get('escada'),
-        #     furadeira=request.form.get('furadeira'),
-        #     lixadeira=request.form.get('lixadeira'),
-        #     solda=request.form.get('solda'),
-        #     oxicorte=request.form.get('oxicorte'))
+        session['ansListEscada'] = dict(
+            numescada=request.form.get('numescada'),)
+        
+        if request.form.get('escadatipo') == 'tesoura':
+            session['ansListEscadaTipo'] = dict(
+                tamanhoescada=request.form.get('tamanhoescada'),
+                materialescada=request.form.get('materialescada'),
+                degraus=request.form.get('degraus'),
+                montantes=request.form.get('montantes'),
+                etiqueta=request.form.get('etiqueta'),
+                patamarsuperior=request.form.get('patamarsuperior'),
+                topo=request.form.get('topo'),
+                sapatas=request.form.get('sapatas'),
+                geral=request.form.get('geral'),
+                outros=request.form.get('outros'),
+                acao=request.form.get('acao'))
 
-        # session['codrecursos'] = str(uuid.uuid4())
+        else:
+            session['ansListEscadaTipo'] = dict(
+                tamanhoescada=request.form.get('tamanhoescada'),
+                materialescada=request.form.get('materialescada'),
+                degraus=request.form.get('degraus'),
+                montantes=request.form.get('montantes'),
+                etiqueta=request.form.get('etiqueta'),
+                catracadeseguranca=request.form.get('catracadeseguranca'),
+                sapatas=request.form.get('sapatas'),
+                cordapolia=request.form.get('cordapolia'),
+                geral=request.form.get('geral'),
+                outros=request.form.get('outros'),
+                acao=request.form.get('acao'))
+
+
+        session['codescada'] = str(uuid.uuid4())
 
         if session.get('ansListArt'):
             return redirect(url_for('views.riscos'))
+        
         else:
-            return redirect(url_for('views.home'))
+            tripaDado, tripaCol = prepList(session.get('ansListEscada'))
+            tripaDado2, tripaCol2 = prepList(session.get('ansListEscadaTipo'))
+
+            conn = psycopg2.connect(host=dbHost, database=dbName,
+                                    user=dbUser, password=dbPass)
+            cursor = conn.cursor()
+
+            insert1 = f"INSERT INTO escadadados (codescada, declarante, {tripaDado}) VALUES ('{session.get('codescada')}', '1', {tripaCol});"
+            if request.form.get('escadatipo') == 'tesoura':
+                insert2 = f"INSERT INTO escadatesoura (codescada, {tripaDado2}) VALUES ('{session.get('codescada')}', {tripaCol2});"
+            
+            else:
+                insert2 = f"INSERT INTO escadaextensivel (codescada, {tripaDado2}) VALUES ('{session.get('codescada')}', {tripaCol2});"
+
+            cursor.execute(insert1)
+            cursor.execute(insert2)
+            conn.commit()
+            conn.close()
+            session.clear()
+
+        return redirect(url_for('views.home'))
         
     return render_template("escada.html", user=current_user)
 

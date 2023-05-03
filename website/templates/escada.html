@@ -51,15 +51,20 @@ content %}
 
         <div>
             <label>
-                <input type="textarea" name="tamanho" placeholder="Tamanho">
-                Tamanho
+                <input type="textarea" name="tamanhoescada" placeholder="Tamanho (em metros)">
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="textarea" name="numescada" placeholder="Nº da Escada">
             </label>
         </div>
 
 
         <div>
-            <label for="dropdowntipo">Tipo: </label>
-            <select id="dropdowntipo">
+            <label for="materialescada">Tipo: </label>
+            <select id="materialescada">
                 <option value="fibra">Fibra de Vidro</option>
                 <option value="aluminio">Alumínio</option>
                 <option value="madeira">Madeira</option>
@@ -76,14 +81,14 @@ content %}
 
         <div>
             <label>
-                <input type="checkbox" name="montante" value="TRUE">
+                <input type="checkbox" name="montantes" value="TRUE">
                 Montantes: Rachado, amassado, desgastado
             </label>
         </div>
 
         <div>
             <label>
-                <input type="checkbox" name="etiquetaescada" value="TRUE">
+                <input type="checkbox" name="etiqueta" value="TRUE">
                 Etiqueta: Falta ou não legível
             </label>
         </div>
@@ -92,7 +97,7 @@ content %}
 
         <div>
             <label>
-                <input type="checkbox" name="patamar" id="patamar" value="TRUE">
+                <input type="checkbox" name="patamarsuperior" id="patamarsuperior" value="TRUE">
                 Patamar Superior: Solto, amassado, ausente?
             </label>
         </div>
@@ -108,7 +113,7 @@ content %}
 
         <div>
             <label>
-                <input type="checkbox" name="catraca" id="catraca" value="TRUE">
+                <input type="checkbox" name="catracadeseguranca" id="catracadeseguranca" value="TRUE">
                 Catraca de Segurança: Solta, amassada, quebrada?
             </label>
         </div>
@@ -124,33 +129,33 @@ content %}
 
         <div>
             <label>
-                <input type="checkbox" name="sapatasescada" value="TRUE">
+                <input type="checkbox" name="sapatas" value="TRUE">
                 Sapatas: Solta, amassada, quebrada?
             </label>
         </div>
 
         <div>
             <label>
-                <input type="checkbox" name="geralescada" value="TRUE">
+                <input type="checkbox" name="geral" value="TRUE">
                 Geral: Solta, dobrada ou quebrada?
             </label>
         </div>
 
         <div>
             <label>
-                <input type="textarea" name="outrosescada" placeholder="Outros">
+                <input type="textarea" name="outros" placeholder="Outros">
             </label>
         </div>
 
         <div>
             <h5>Ação:</h5>
             <label>
-                <input type="radio" name="escadatipo" value="FALSE">
+                <input type="radio" name="acao" value="FALSE">
                 Escada danificada, não utilizar
             </label>
 
             <label>
-                <input type="radio" name="escadatipo" value="TRUE">
+                <input type="radio" name="acao" value="TRUE">
                 Escada está em boas condições de uso
             </label>
         </div>
