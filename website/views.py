@@ -34,6 +34,15 @@ Temos também o models.py, o auth.py, o __init__.py e o app.py, cada um com suas
 
 
 def prepList(workList):
+    """ESSA FUNÇÃO É IMPORTANTE PACAS, BORA LÁ:
+
+    Ela separa o dicionário de respostas do formulário em uma string usada no INSERT lá embaixo
+
+    Um detalhe importante é a inclusão das aspas simples nas respostas. Quase todos os campos
+    precisam ter essas aspas incluídas pro comando SQL funcionar.
+
+    Alguns campos já recebem essas aspas no momento da declaração e outros são incluídos aqui. 
+    """
     tripaColuna = []
     tripaDado = []
 
@@ -79,6 +88,7 @@ def novaSolicitacao():
             ativrotina=request.form.get('ativrotina'),
             numeroos=f"'{request.form.get('numeroos')}'")
 
+        #esse comando cria o código único para ser utilizado como chave no banco
         session['codart'] = str(uuid.uuid4())
 
         return redirect(url_for('views.formulario'))
@@ -123,6 +133,9 @@ def escada():
 
 
         session['codescada'] = str(uuid.uuid4())
+
+        #esse IF statement controla o fluxo da aplicação. Se o formulário de escada foi acessado a partir da art,
+        #ele envia para o próximo passo. Senão, executa o insert no banco
 
         if session.get('ansListArt'):
             session['escadatipo'] = request.form.get('escadatipo')
@@ -270,11 +283,7 @@ def closing():
         else:
             css5 = f"INSERT INTO escadaextensível (codescada, {tripaEscada2}) VALUES ('{session.get('codescada')}', {tripaEscadaCol2});"
 
-
-    print(f"Art: {css1}")
-    print(f"Recursos Materiais: {css2}")
-    print(f"Riscos Potenciais: {css3}")
-
+    #a ordem dos inserts é muito importante para respeitar os vínculos criados no db
     cursor.execute(css3)
     cursor.execute(css2)
     cursor.execute(css1)
