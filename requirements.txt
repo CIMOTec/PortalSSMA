@@ -56,7 +56,6 @@ pycep-correios==5.0.0
 pycparser==2.21
 pyinstaller==5.5
 pyinstaller-hooks-contrib==2022.8
-pymssql==2.2.5
 pyodbc==4.0.35
 pyOpenSSL==22.0.0
 pyparsing==3.0.9
