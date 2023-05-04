@@ -1,5 +1,4 @@
-﻿python-3.10.4
-altgraph==0.17.2
+﻿altgraph==0.17.2
 async-generator==1.10
 attrs==22.1.0
 beautifulsoup4==4.11.1
