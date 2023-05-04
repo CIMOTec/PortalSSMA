@@ -1,4 +1,4 @@
-.btn :disabled{
+/* .btn :disabled{
   background-color: #000000;
   color: transparent;
   cursor: progress;
@@ -88,15 +88,8 @@
   width: 600px;
 }
 
-/* ESTILOS DOS FORMULÁRIOS */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-/* *
-{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-} */
+
 
 .outerBox {
   position: relative;
@@ -113,7 +106,7 @@
     width: 100%;
     padding: 10px;
     border: 1PX solid rgba(255,255,255,0.25);
-    background: #1d2b3a;
+    background: #4472c4;
     border-radius: 5px;
     outline: none;
     color: #fff;
@@ -148,7 +141,6 @@
     border: 1px solid #00dfc4;
 }
 
-/*ESTILO DAS CHECKBOXES*/
 
 input[type="radio"]{
   display: none;
@@ -230,4 +222,4 @@ input[type="radio"]:checked + .spanradio:before {
 
 .containercheck div label input[type="checkbox"]:checked ~ span{
   background: #4472c4;
-}
+} */

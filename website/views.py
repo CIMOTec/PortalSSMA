@@ -101,7 +101,7 @@ def novaSolicitacao():
 def escada():
     if request.method == 'POST':
         session['ansListEscada'] = dict(
-            numescada=request.form.get('numescada'),)
+            numescada=f"'{request.form.get('numescada')}'")
         
         if request.form.get('escadatipo') == 'tesoura':
             session['ansListEscadaTipo'] = dict(
@@ -149,7 +149,7 @@ def escada():
                                     user=dbUser, password=dbPass)
             cursor = conn.cursor()
 
-            insert1 = f"INSERT INTO escadadados (codescada, declarante, {tripaDado}) VALUES ('{session.get('codescada')}', '1', {tripaCol});"
+            insert1 = f"INSERT INTO escadadados (codescada, declarante, {tripaDado}) VALUES ('{session.get('codescada')}', '{session.get('username')}', {tripaCol});"
             if request.form.get('escadatipo') == 'tesoura':
                 insert2 = f"INSERT INTO escadatesoura (codescada, {tripaDado2}) VALUES ('{session.get('codescada')}', {tripaCol2});"
             
@@ -160,7 +160,9 @@ def escada():
             cursor.execute(insert2)
             conn.commit()
             conn.close()
+            user = session.get('username')
             session.clear()
+            session['username'] = user
 
         return redirect(url_for('views.home'))
         
@@ -276,12 +278,14 @@ def closing():
         tripaEscada, tripaEscadaCol = prepList(session.get('ansListEscada'))
         tripaEscada2, tripaEscadaCol2 = prepList(session.get('ansListEscadaTipo'))
 
-        css4 = f"INSERT INTO escadadados (codescada, codart, declarante, {tripaEscada}) VALUES ('{session.get('codescada')}', '{session.get('codart')}', '1', {tripaEscadaCol});"
+        css4 = f"INSERT INTO escadadados (codescada, codart, declarante, {tripaEscada}) VALUES ('{session.get('codescada')}', '{session.get('codart')}', '{session.get('username')}', {tripaEscadaCol});"
 
         if session.get('escadatipo') == 'tesoura':
             css5 = f"INSERT INTO escadatesoura (codescada, {tripaEscada2}) VALUES ('{session.get('codescada')}', {tripaEscadaCol2});"
         else:
             css5 = f"INSERT INTO escadaextensível (codescada, {tripaEscada2}) VALUES ('{session.get('codescada')}', {tripaEscadaCol2});"
+
+    css6 = f"INSERT INTO artdeclarante (coddeclarante, codart) VALUES ('{session.get('username')}', '{session.get('codart')}')"
 
     #a ordem dos inserts é muito importante para respeitar os vínculos criados no db
     cursor.execute(css3)
@@ -294,8 +298,12 @@ def closing():
     except UnboundLocalError:
         pass
 
+    cursor.execute(css6)
+
     conn.commit()
     conn.close()
+    user = session.get('username')
     session.clear()
+    session['usernamen'] = user
 
     return render_template("closing.html", user=current_user)
