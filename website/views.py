@@ -51,10 +51,6 @@ def prepList(workList):
         tripaColuna.append(key)
         if workList[key] == None:
             tripaDado.append('FALSE')
-        elif workList[key] == '' and key == 'outros':
-            tripaDado.append("'Sem outros'")
-        elif key == 'outros':
-            tripaDado.append(f"'{str(workList[key])}'")
         else:
             tripaDado.append(workList[key])
 
@@ -105,7 +101,7 @@ def escada():
         
         if request.form.get('escadatipo') == 'tesoura':
             session['ansListEscadaTipo'] = dict(
-                tamanhoescada=request.form.get('tamanhoescada'),
+                tamanhoescada=f"'{request.form.get('tamanhoescada')}'",
                 materialescada=request.form.get('materialescada'),
                 degraus=request.form.get('degraus'),
                 montantes=request.form.get('montantes'),
@@ -114,7 +110,7 @@ def escada():
                 topo=request.form.get('topo'),
                 sapatas=request.form.get('sapatas'),
                 geral=request.form.get('geral'),
-                outros=request.form.get('outros'),
+                outros=f"'{request.form.get('outros')}'",
                 acao=request.form.get('acao'))
 
         else:
@@ -128,7 +124,7 @@ def escada():
                 sapatas=request.form.get('sapatas'),
                 cordapolia=request.form.get('cordapolia'),
                 geral=request.form.get('geral'),
-                outros=request.form.get('outros'),
+                outros=f"'{request.form.get('outros')}'",
                 acao=request.form.get('acao'))
 
 
@@ -251,7 +247,7 @@ def riscos():
             rompimento=request.form.get('rompimento'),
             riscosTerceiros=request.form.get('riscosTerceiros'),
             ruido=request.form.get('ruido'),
-            outros=request.form.get('outros')
+            outros=f"'{request.form.get('outros')}'"
         )
 
         return redirect(url_for('views.closing'))
