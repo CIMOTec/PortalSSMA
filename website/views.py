@@ -111,7 +111,7 @@ def escada():
                 sapatas=request.form.get('sapatas'),
                 geral=request.form.get('geral'),
                 outros=f"'{request.form.get('outros')}'",
-                acao=request.form.get('acao'))
+                acao=f"'{request.form.get('acao')}'")
 
         else:
             session['ansListEscadaTipo'] = dict(
@@ -125,7 +125,7 @@ def escada():
                 cordapolia=request.form.get('cordapolia'),
                 geral=request.form.get('geral'),
                 outros=f"'{request.form.get('outros')}'",
-                acao=request.form.get('acao'))
+                acao=f"'{request.form.get('acao')}'")
 
 
         session['codescada'] = str(uuid.uuid4())
