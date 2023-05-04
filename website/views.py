@@ -115,7 +115,7 @@ def escada():
 
         else:
             session['ansListEscadaTipo'] = dict(
-                tamanhoescada=request.form.get('tamanhoescada'),
+                tamanhoescada=f"'{request.form.get('tamanhoescada')}'",
                 materialescada=request.form.get('materialescada'),
                 degraus=request.form.get('degraus'),
                 montantes=request.form.get('montantes'),
