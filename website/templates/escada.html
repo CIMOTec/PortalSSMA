@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block title %}Escada{% endblock %} {% block
 content %}
-<h3>Check List - Utilização de Escada</h3>
+<p><h3>Check List - Utilização de Escada</h3></p>
 
 <form method="POST">
     <div>
@@ -18,6 +18,20 @@ content %}
                 </label>
             </div>
 
+<div class="img">
+<body>
+    <img src="static/img/tesoura.jpg" 
+    width="60"
+    height="60"
+    />
+    <img src="static/img/extensivel.jpg" 
+    width="60"
+    height="60"
+    />
+    </body>
+</div>
+
+
         <!-- BLOCO PADRÃO -->
 
         <div class="outerBox">
@@ -34,14 +48,24 @@ content %}
             </div>
         </div>
 
-        <div>
+    <div>
+        <div class="outerBox">   
+                    <select id="materialescada">
+                        <option value="fibra">Fibra de Vidro</option>
+                        <option value="aluminio">Alumínio</option>
+                        <option value="madeira">Madeira</option>
+                    </select>
+        </div>
+    </div>
+
+        <!-- <div>
             <label for="materialescada">Tipo: </label>
             <select id="materialescada">
                 <option value="fibra">Fibra de Vidro</option>
                 <option value="aluminio">Alumínio</option>
                 <option value="madeira">Madeira</option>
             </select>
-        </div>
+        </div> -->
 
         <div class="containercheck">
             <div>
@@ -137,7 +161,7 @@ content %}
             </div>
         </div>
 
-        <h5>Ação:</h5>
+        <p><h5>Ação:</h5></p>
         <div class="container">
             <label class="labelcheck">
                 <input type="radio" id="acaot" name="acao" value="TRUE"/>
