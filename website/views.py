@@ -71,6 +71,7 @@ def home():
 @login_required
 def novaSolicitacao():
     if request.method == 'POST':
+        session['flag'] = True
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
         session['ansListArt'] = dict(
             treinado=request.form.get('treinado'),
@@ -84,7 +85,7 @@ def novaSolicitacao():
             ativrotina=request.form.get('ativrotina'),
             numeroos=f"'{request.form.get('numeroos')}'")
 
-        #esse comando cria o código único para ser utilizado como chave no banco
+        # esse comando cria o código único para ser utilizado como chave no banco
         session['codart'] = str(uuid.uuid4())
 
         return redirect(url_for('views.formulario'))
@@ -98,7 +99,7 @@ def escada():
     if request.method == 'POST':
         session['ansListEscada'] = dict(
             numescada=f"'{request.form.get('numescada')}'")
-        
+
         if request.form.get('escadatipo') == 'tesoura':
             session['ansListEscadaTipo'] = dict(
                 tamanhoescada=f"'{request.form.get('tamanhoescada')}'",
@@ -127,16 +128,15 @@ def escada():
                 outros=f"'{request.form.get('outros')}'",
                 acao=f"'{request.form.get('acao')}'")
 
-
         session['codescada'] = str(uuid.uuid4())
 
-        #esse IF statement controla o fluxo da aplicação. Se o formulário de escada foi acessado a partir da art,
-        #ele envia para o próximo passo. Senão, executa o insert no banco
+        # esse IF statement controla o fluxo da aplicação. Se o formulário de escada foi acessado a partir da art,
+        # ele envia para o próximo passo. Senão, executa o insert no banco
 
-        if session.get('ansListArt'):
+        if session.get('flag'):
             session['escadatipo'] = request.form.get('escadatipo')
             return redirect(url_for('views.riscos'))
-        
+
         else:
             tripaDado, tripaCol = prepList(session.get('ansListEscada'))
             tripaDado2, tripaCol2 = prepList(session.get('ansListEscadaTipo'))
@@ -148,7 +148,7 @@ def escada():
             insert1 = f"INSERT INTO escadadados (codescada, declarante, {tripaDado}) VALUES ('{session.get('codescada')}', '{session.get('username')}', {tripaCol});"
             if request.form.get('escadatipo') == 'tesoura':
                 insert2 = f"INSERT INTO escadatesoura (codescada, {tripaDado2}) VALUES ('{session.get('codescada')}', {tripaCol2});"
-            
+
             else:
                 insert2 = f"INSERT INTO escadaextensivel (codescada, {tripaDado2}) VALUES ('{session.get('codescada')}', {tripaCol2});"
 
@@ -156,12 +156,9 @@ def escada():
             cursor.execute(insert2)
             conn.commit()
             conn.close()
-            user = session.get('username')
-            session.clear()
-            session['username'] = user
 
         return redirect(url_for('views.home'))
-        
+
     return render_template("escada.html", user=current_user)
 
 
@@ -272,7 +269,8 @@ def closing():
 
     if session.get('codescada'):
         tripaEscada, tripaEscadaCol = prepList(session.get('ansListEscada'))
-        tripaEscada2, tripaEscadaCol2 = prepList(session.get('ansListEscadaTipo'))
+        tripaEscada2, tripaEscadaCol2 = prepList(
+            session.get('ansListEscadaTipo'))
 
         css4 = f"INSERT INTO escadadados (codescada, codart, declarante, {tripaEscada}) VALUES ('{session.get('codescada')}', '{session.get('codart')}', '{session.get('username')}', {tripaEscadaCol});"
 
@@ -283,7 +281,7 @@ def closing():
 
     css6 = f"INSERT INTO artdeclarante (coddeclarante, codart) VALUES ('{session.get('username')}', '{session.get('codart')}')"
 
-    #a ordem dos inserts é muito importante para respeitar os vínculos criados no db
+    # a ordem dos inserts é muito importante para respeitar os vínculos criados no db
     cursor.execute(css3)
     cursor.execute(css2)
     cursor.execute(css1)
@@ -298,8 +296,5 @@ def closing():
 
     conn.commit()
     conn.close()
-    user = session.get('username')
-    session.clear()
-    session['usernamen'] = user
 
     return render_template("closing.html", user=current_user)
