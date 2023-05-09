@@ -3,7 +3,7 @@ import requests
 from flask_login import login_required, current_user
 import psycopg2
 import pandas as pd
-from datetime import datetime
+import datetime
 from bs4 import BeautifulSoup
 import lxml
 from . import db
@@ -135,7 +135,7 @@ def escada():
 
         if session.get('flag'):
             session['escadatipo'] = request.form.get('escadatipo')
-            return redirect(url_for('views.riscos'))
+            return redirect(url_for('views.epis'))
 
         else:
             tripaDado, tripaCol = prepList(session.get('ansListEscada'))
@@ -182,10 +182,43 @@ def formulario():
         if request.form.get('escada') == 'TRUE':
             return redirect(url_for('views.escada'))
         else:
-            return redirect(url_for('views.riscos'))
+            return redirect(url_for('views.epis'))
 
     return render_template('formulario.html', user=current_user)
 
+@views.route('/epis', methods=['GET', 'POST'])
+@login_required
+def epis():
+    if request.method == 'POST':
+        # esse é o comando utilizado pra pegar as informações preenchidas no formulário
+
+        session['ansListEpis'] = dict(
+            avental=request.form.get('avental'),
+            bota=request.form.get('bota'),
+            botina=request.form.get('botina'),
+            blusao=request.form.get('blusao'),
+            capacete=request.form.get('capacete'),
+            cinto=request.form.get('cinto'),
+            conjunto=request.form.get('conjunto'),
+            camiscalca=request.form.get('camiscalca'),
+            creme=request.form.get('creme'),
+            luva=request.form.get('luva'),
+            mascarafuga=request.form.get('mascarafuga'),
+            mascarasolda=request.form.get('mascarasolda'),
+            mangote=request.form.get('mangote'),
+            oculosseg=request.form.get('oculosseg'),
+            oculosmacarico=request.form.get('oculosmacarico'),
+            perneira=request.form.get('perneira'),
+            protfacial=request.form.get('protfacial'),
+            protarco=request.form.get('protarco'),
+            resppoeiras=request.form.get('resppoeiras'),
+            respvapores=request.form.get('respvapores'))
+
+        session['codepis'] = str(uuid.uuid4())
+
+        return redirect(url_for('views.riscos'))
+
+    return render_template('epis.html', user=current_user)
 
 @views.route('/riscos', methods=['GET', 'POST'])
 @login_required
@@ -247,9 +280,37 @@ def riscos():
             outros=f"'{request.form.get('outros')}'"
         )
 
-        return redirect(url_for('views.closing'))
+        return redirect(url_for('views.acoes'))
 
     return render_template("riscos.html", user=current_user)
+
+@views.route('/acoes', methods=['GET', 'POST'])
+@login_required
+def acoes():
+    if request.method == 'POST':
+        # esse é o comando utilizado pra pegar as informações preenchidas no formulário
+
+        session['codacoes'] = str(uuid.uuid4())
+        session['ansListAcoes'] = dict(
+            aterramento=request.form.get('aterramento'),
+            enclausuramento=request.form.get('enclausuramento'),
+            iluminacao=request.form.get('iluminacao'),
+            passarela=request.form.get('passarela'),
+            isolamento=request.form.get('isolamento'),
+            limpeza=request.form.get('limpeza'),
+            extintor=request.form.get('extintor'),
+            sinalizacao=request.form.get('sinalizacao'),
+            tela=request.form.get('tela'),
+            travamento=request.form.get('travamento'),
+            ventilacao=request.form.get('ventilacao'),
+            portateis=request.form.get('portateis'),
+            ferrisolantes=request.form.get('ferrisolantes'),
+            outrosacoes=f"'{request.form.get('outrosacoes')}'"            
+        )
+
+        return redirect(url_for('views.closing'))
+
+    return render_template("acoes.html", user=current_user)
 
 
 @views.route('/closing', methods=['GET'])
@@ -262,10 +323,14 @@ def closing():
     tripaArt, tripaArtCol = prepList(session.get('ansListArt'))
     tripaRec, tripaRecCol = prepList(session.get('ansListRec'))
     tripaRiscos, tripaRiscosCol = prepList(session.get('ansListRiscos'))
+    tripaEpis, tripaEpisCol = prepList(session.get('ansListEpis'))
+    tripaAcoes, tripaAcoesCol = prepList(session.get('ansListAcoes'))
 
-    css1 = f"INSERT INTO art ({tripaArt}, codart, codrecursos, codriscos) VALUES ({tripaArtCol},'{session.get('codart')}','{session.get('codrecursos')}','{session.get('codriscos')}');"
+    css1 = f"INSERT INTO art ({tripaArt}, codart, codrecursos, codriscos, data, codepis, codacoes) VALUES ({tripaArtCol},'{session.get('codart')}','{session.get('codrecursos')}','{session.get('codriscos')}', '{datetime.datetime.now()}','{session.get('codepis')}','{session.get('codacoes')}');"
     css2 = f"INSERT INTO recursosmateriais ({tripaRec}, codrecursos) VALUES ({tripaRecCol},'{session.get('codrecursos')}');"
     css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}, codriscos) VALUES ({tripaRiscosCol},'{session.get('codriscos')}');"
+    css7 = f"INSERT INTO epis ({tripaEpis}, codepis) VALUES ({tripaEpisCol},'{session.get('codepis')}');"
+    css8 = f"INSERT INTO acoes ({tripaAcoes}, codacoes) VALUES ({tripaAcoesCol},'{session.get('codacoes')}');"
 
     if session.get('codescada'):
         tripaEscada, tripaEscadaCol = prepList(session.get('ansListEscada'))
@@ -282,6 +347,8 @@ def closing():
     css6 = f"INSERT INTO artdeclarante (coddeclarante, codart) VALUES ('{session.get('username')}', '{session.get('codart')}')"
 
     # a ordem dos inserts é muito importante para respeitar os vínculos criados no db
+    cursor.execute(css8)
+    cursor.execute(css7)
     cursor.execute(css3)
     cursor.execute(css2)
     cursor.execute(css1)

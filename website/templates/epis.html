@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}EPI's Utilizados{% endblock %} {% block
+content %}
+
+<p><h3 align="center">EPI's Utilizados</h3></p>
+
+<form method="POST">
+    <div class="wrapper">
+        <div class="containercheck"><div> <label><input type="checkbox" name="avental" id="avental" value="TRUE"> <span>Avental raspa ou PVC</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="bota" id="bota" value="TRUE"> <span>Bota PVC</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="botina" id="botina" value="TRUE"> <span>Botina / Sapato de segurança</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="blusao" id="blusao" value="TRUE"> <span>Blusão de raspa</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="capacete" id="capacete" value="TRUE"> <span>Capacete de segurança com jugular</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="cinto" id="cinto" value="TRUE"> <span>Cinto de segurança</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="conjunto" id="conjunto" value="TRUE"> <span>Conjunto antiácido</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="camiscalca" id="camiscalca" value="TRUE"> <span>Camisa e Calça NR 10</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="creme" id="creme" value="TRUE"> <span>Creme protetivo para pele</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="luva" id="luva" value="TRUE"> <span>Luvas de segurança (vaqueta, latex, pigmentada, multitato)</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="mascarafuga" id="mascarafuga" value="TRUE"> <span>Máscara de fuga</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="mascarasolda" id="mascarasolda" value="TRUE"> <span>Máscara de solda</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="mangote" id="mangote" value="TRUE"> <span>Mangote raspa / aramida</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="oculosseg" id="oculosseg" value="TRUE"> <span>Óculos de segurança incolor</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="oculosmacarico" id="oculosmacarico" value="TRUE"> <span>Óculos para maçarico</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="perneira" id="perneira" value="TRUE"> <span>Perneira de raspa / PVC</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="protfacial" id="protfacial" value="TRUE"> <span>Proteção facial incolor</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="protarco" id="protarco" value="TRUE"> <span>Proteção facial contra arco-voltaico</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="resppoeiras" id="resppoeiras" value="TRUE"> <span>Respirador contra poeiras</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="respvapores" id="respvapores" value="TRUE"> <span>Respirador contra vapores</span></label></div> </div>
+        <a>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button id="button" class="btn btn-primary btn-lg" type="submit">OK</button>
+            </div>
+        </a>
+    </div>
+</form>
+{% endblock %}

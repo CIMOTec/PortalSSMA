@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %}Ações Tomadas{% endblock %} {% block
+content %}
+
+<p><h3 align="center">Ações Tomadas</h3></p>
+
+<form method="POST">
+    <div class="wrapper">
+        <div class="containercheck"><div> <label><input type="checkbox" name="aterramento" id="aterramento" value="TRUE"> <span>Aterramento elétrico</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="enclausuramento" id="enclausuramento" value="TRUE"> <span>Enclausuramento</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="iluminacao" id="iluminacao" value="TRUE"> <span>Iluminação Artificial</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="passarela" id="passarela" value="TRUE"> <span>Instalar passarela / guarda corpo</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="isolamento" id="isolamento" value="TRUE"> <span>Isolamento de área / equipamento</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="limpeza" id="limpeza" value="TRUE"> <span>Limpeza de área / equipamento</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="extintor" id="extintor" value="TRUE"> <span>Extintor de incêndio</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="sinalizacao" id="sinalizacao" value="TRUE"> <span>Sinalização da área</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="tela" id="tela" value="TRUE"> <span>Tela de proteção</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="travamento" id="travamento" value="TRUE"> <span>Travamento / bloqueio</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="ventilacao" id="ventilacao" value="TRUE"> <span>Ventilação artificial</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="portateis" id="portateis" value="TRUE"> <span>Escadas portáteis deverão ser equipadas com sapatas, amarradas e apoiadas em pontos físicos</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="ferrisolantes" id="ferrisolantes" value="TRUE"> <span>Utilizar ferramentas isolantes</span></label></div> </div>
+        <div class="containercheck"><div> <label><input type="checkbox" name="outrosacoes" id="outrosacoes" value="TRUE"> <span>Outros</span></label></div> </div>
+        <a>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button id="button" class="btn btn-primary btn-lg" type="submit">OK</button>
+            </div>
+        </a>
+    </div>
+</form>
+{% endblock %}

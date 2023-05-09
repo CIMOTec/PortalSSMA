@@ -229,7 +229,7 @@ input[type="radio"]:checked + .spanradio:before {
   /* text-shadow: 0 1px 5px #0B2536; */
   border-radius: 15px;
   font-size: 18px;
-  transition: 0.5s;
+  transition: 0.25s;
   overflow: hidden;
 }
 
@@ -294,6 +294,6 @@ select {
 
 
 select option:checked {
-  background-color: rgb(211, 25, 25);
+  background-color: rgb(173, 153, 153);
   color: #000000;
 }
