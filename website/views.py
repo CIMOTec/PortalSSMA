@@ -16,6 +16,8 @@ import uuid
 views = Blueprint('views', __name__)
 views.secret_key = 'blablabla'
 
+flagGlobal = 0
+
 requests.packages.urllib3.disable_warnings()
 requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
 
@@ -70,6 +72,10 @@ def home():
 @views.route('/novaSolicitacao', methods=['GET', 'POST'])
 @login_required
 def novaSolicitacao():
+    global flagGlobal
+    flagGlobal += 1
+    print(f"\n\n\nVariável Global: {flagGlobal}\n\n\n")
+
     if request.method == 'POST':
         session['flag'] = True
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
@@ -146,7 +152,7 @@ def escada():
                                     user=dbUser, password=dbPass)
             cursor = conn.cursor()
 
-            insert1 = f"INSERT INTO escadadados (codescada, declarante, {tripaDado}) VALUES ('{session.get('codescada')}', '{session.get('username')}', {tripaCol});"
+            insert1 = f"INSERT INTO escadadados (codescada, declarante, {tripaDado}, dataescada) VALUES ('{session.get('codescada')}', '{session.get('username')}', {tripaCol}, '{datetime.datetime.now()}');"
             if request.form.get('escadatipo') == 'tesoura':
                 insert2 = f"INSERT INTO escadatesoura (codescada, {tripaDado2}) VALUES ('{session.get('codescada')}', {tripaCol2});"
 
@@ -166,6 +172,9 @@ def escada():
 @views.route('/formulario', methods=['GET', 'POST'])
 @login_required
 def formulario():
+    global flagGlobal
+    flagGlobal += 1
+    print(f"\n\n\nVariável Global: {flagGlobal}\n\n\n")
     if request.method == 'POST':
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
