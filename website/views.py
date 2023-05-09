@@ -134,6 +134,7 @@ def escada():
         # ele envia para o próximo passo. Senão, executa o insert no banco
 
         if session.get('flag'):
+            session['flag'] = False
             session['escadatipo'] = request.form.get('escadatipo')
             return redirect(url_for('views.epis'))
 
