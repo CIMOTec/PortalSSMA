@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session
 import requests
 from flask_login import login_required, current_user
 import psycopg2
@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 import lxml
 from . import db
 from .creds import *
-from .models import convertData, findValue, findCustomValue, convertText
+from .models import convertData
 import unicodedata
 import json
 import uuid
