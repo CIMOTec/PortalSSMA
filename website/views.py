@@ -63,15 +63,29 @@ def prepList(workList):
     return tripaColuna, tripaDado
 
 
+"""
+art - A
+checklist de escada - B
+recursos - C
+epis - D
+riscos - E
+acoes - F
+fechamento - G
+"""
+
+
 @views.route('/', methods=['GET'])
 @login_required
 def home():
+    session['joaoMaria'] = ''
     return render_template("home.html", user=current_user)
 
 
 @views.route('/novaSolicitacao', methods=['GET', 'POST'])
 @login_required
 def novaSolicitacao():
+    session['joaoMaria'] = session['joaoMaria'] + 'A'
+
     global flagGlobal
     flagGlobal += 1
     print(f"\n\n\nVariável Global: {flagGlobal}\n\n\n")
@@ -102,6 +116,8 @@ def novaSolicitacao():
 @views.route('/escada', methods=['GET', 'POST'])
 @login_required
 def escada():
+    session['joaoMaria'] = session['joaoMaria'] + 'B'
+
     if request.method == 'POST':
         session['ansListEscada'] = dict(
             numescada=f"'{request.form.get('numescada')}'")
@@ -139,8 +155,7 @@ def escada():
         # esse IF statement controla o fluxo da aplicação. Se o formulário de escada foi acessado a partir da art,
         # ele envia para o próximo passo. Senão, executa o insert no banco
 
-        if session.get('flag'):
-            session['flag'] = False
+        if session.get('joaoMaria')[-1] == 'C':
             session['escadatipo'] = request.form.get('escadatipo')
             return redirect(url_for('views.epis'))
 
@@ -172,6 +187,8 @@ def escada():
 @views.route('/formulario', methods=['GET', 'POST'])
 @login_required
 def formulario():
+    session['joaoMaria'] = session['joaoMaria'] + 'C'
+
     global flagGlobal
     flagGlobal += 1
     print(f"\n\n\nVariável Global: {flagGlobal}\n\n\n")
@@ -196,9 +213,12 @@ def formulario():
 
     return render_template('formulario.html', user=current_user)
 
+
 @views.route('/epis', methods=['GET', 'POST'])
 @login_required
 def epis():
+    session['joaoMaria'] = session['joaoMaria'] + 'D'
+
     if request.method == 'POST':
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
@@ -230,9 +250,12 @@ def epis():
 
     return render_template('epis.html', user=current_user)
 
+
 @views.route('/riscos', methods=['GET', 'POST'])
 @login_required
 def riscos():
+    session['joaoMaria'] = session['joaoMaria'] + 'E'
+
     if request.method == 'POST':
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
@@ -294,9 +317,12 @@ def riscos():
 
     return render_template("riscos.html", user=current_user)
 
+
 @views.route('/acoes', methods=['GET', 'POST'])
 @login_required
 def acoes():
+    session['joaoMaria'] = session['joaoMaria'] + 'F'
+
     if request.method == 'POST':
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
@@ -315,7 +341,7 @@ def acoes():
             ventilacao=request.form.get('ventilacao'),
             portateis=request.form.get('portateis'),
             ferrisolantes=request.form.get('ferrisolantes'),
-            outrosacoes=f"'{request.form.get('outrosacoes')}'"            
+            outrosacoes=f"'{request.form.get('outrosacoes')}'"
         )
 
         return redirect(url_for('views.closing'))
@@ -326,6 +352,8 @@ def acoes():
 @views.route('/closing', methods=['GET'])
 @login_required
 def closing():
+    session['joaoMaria'] = session['joaoMaria'] + 'G'
+
     conn = psycopg2.connect(host=dbHost, database=dbName,
                             user=dbUser, password=dbPass)
     cursor = conn.cursor()
