@@ -377,9 +377,9 @@ def closing():
         css4 = f"INSERT INTO escadadados (codart, declarante, {tripaEscada}) VALUES (currval('seq_codart'), '{session.get('username')}', {tripaEscadaCol});"
 
         if session.get('escadatipo') == 'tesoura':
-            css5 = f"INSERT INTO escadatesoura (codescada, {tripaEscada2}) VALUES ('{session.get('codescada')}', {tripaEscadaCol2});"
+            css5 = f"INSERT INTO escadatesoura (codescada, {tripaEscada2}) VALUES (currval('seq_codescada'), {tripaEscadaCol2});"
         else:
-            css5 = f"INSERT INTO escadaextensivel (codescada, {tripaEscada2}) VALUES ('{session.get('codescada')}', {tripaEscadaCol2});"
+            css5 = f"INSERT INTO escadaextensivel (codescada, {tripaEscada2}) VALUES (currval('seq_codescada'), {tripaEscadaCol2});"
 
     css6 = f"INSERT INTO artdeclarante (coddeclarante, codart) VALUES ('{session.get('username')}', currval('seq_codart'))"
 
