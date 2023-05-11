@@ -115,6 +115,7 @@ def novaSolicitacao():
 @login_required
 def escada():
     if request.method == 'POST':
+        session['escadaLock'] = True
         session['ansListEscada'] = dict(
             numescada=f"'{request.form.get('numescada')}'")
 
@@ -361,18 +362,19 @@ def closing():
     tripaEpis, tripaEpisCol = prepList(session.get('ansListEpis'))
     tripaAcoes, tripaAcoesCol = prepList(session.get('ansListAcoes'))
 
-    css1 = f"INSERT INTO art ({tripaArt}, codrecursos, codriscos, data, codepis, codacoes) VALUES ({tripaArtCol}, currval('seq_codrecursos')', currval('seq_codriscos'), '{datetime.datetime.now()}',currval('seq_codepis'),currval('seq_codacoes'));"
+    css1 = f"INSERT INTO art ({tripaArt}, codrecursos, codriscos, data, codepis, codacoes) VALUES ({tripaArtCol}, currval('seq_codrecursos'), currval('seq_codriscos'), '{datetime.datetime.now()}',currval('seq_codepis'),currval('seq_codacoes'));"
     css2 = f"INSERT INTO recursosmateriais ({tripaRec}) VALUES ({tripaRecCol});"
     css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}) VALUES ({tripaRiscosCol});"
     css7 = f"INSERT INTO epis ({tripaEpis}) VALUES ({tripaEpisCol});"
     css8 = f"INSERT INTO acoes ({tripaAcoes}) VALUES ({tripaAcoesCol});"
 
-    if session.get('ansListEscada'):
+    if session.get('escadaLock'):
+        session['escadaLock'] = False
         tripaEscada, tripaEscadaCol = prepList(session.get('ansListEscada'))
         tripaEscada2, tripaEscadaCol2 = prepList(
             session.get('ansListEscadaTipo'))
 
-        css4 = f"INSERT INTO escadadados (codart, declarante, {tripaEscada}) VALUES (currval('seq_codart')', '{session.get('username')}', {tripaEscadaCol});"
+        css4 = f"INSERT INTO escadadados (codart, declarante, {tripaEscada}) VALUES (currval('seq_codart'), '{session.get('username')}', {tripaEscadaCol});"
 
         if session.get('escadatipo') == 'tesoura':
             css5 = f"INSERT INTO escadatesoura (codescada, {tripaEscada2}) VALUES ('{session.get('codescada')}', {tripaEscadaCol2});"
