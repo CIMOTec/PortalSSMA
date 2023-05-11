@@ -174,6 +174,8 @@ def escada():
             conn.commit()
             conn.close()
 
+            return redirect(url_for('views.escadafechamento'))
+
         else:
             session['joaoMaria'] = session['joaoMaria'] + 'B'
             print(session.get('joaoMaria'))
@@ -184,6 +186,12 @@ def escada():
         return redirect(url_for('views.home'))
 
     return render_template("escada.html", user=current_user)
+
+
+@views.route('/escadafechamento', methods=['GET', 'POST'])
+@login_required
+def escadafechamento():
+    return render_template("escadafechamento.html", user=current_user)
 
 
 @views.route('/formulario', methods=['GET', 'POST'])
