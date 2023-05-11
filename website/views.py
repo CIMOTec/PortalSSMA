@@ -64,6 +64,7 @@ def prepList(workList):
 
 
 """
+começo - Init
 art - A
 checklist de escada - B
 recursos - C
@@ -77,19 +78,14 @@ fechamento - G
 @views.route('/', methods=['GET'])
 @login_required
 def home():
-    session['joaoMaria'] = ''
+    session['joaoMaria'] = 'Init'
+    print(session.get('joaoMaria'))
     return render_template("home.html", user=current_user)
 
 
 @views.route('/novaSolicitacao', methods=['GET', 'POST'])
 @login_required
 def novaSolicitacao():
-    session['joaoMaria'] = session['joaoMaria'] + 'A'
-
-    global flagGlobal
-    flagGlobal += 1
-    print(f"\n\n\nVariável Global: {flagGlobal}\n\n\n")
-
     if request.method == 'POST':
         session['flag'] = True
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
@@ -106,7 +102,9 @@ def novaSolicitacao():
             numeroos=f"'{request.form.get('numeroos')}'")
 
         # esse comando cria o código único para ser utilizado como chave no banco
-        session['codart'] = str(uuid.uuid4())
+
+        session['joaoMaria'] = session['joaoMaria'] + 'A'
+        print(session.get('joaoMaria'))
 
         return redirect(url_for('views.formulario'))
 
@@ -116,8 +114,6 @@ def novaSolicitacao():
 @views.route('/escada', methods=['GET', 'POST'])
 @login_required
 def escada():
-    session['joaoMaria'] = session['joaoMaria'] + 'B'
-
     if request.method == 'POST':
         session['ansListEscada'] = dict(
             numescada=f"'{request.form.get('numescada')}'")
@@ -150,16 +146,13 @@ def escada():
                 outros=f"'{request.form.get('outros')}'",
                 acao=f"'{request.form.get('acao')}'")
 
-        session['codescada'] = str(uuid.uuid4())
-
         # esse IF statement controla o fluxo da aplicação. Se o formulário de escada foi acessado a partir da art,
         # ele envia para o próximo passo. Senão, executa o insert no banco
 
-        if session.get('joaoMaria')[-1] == 'C':
-            session['escadatipo'] = request.form.get('escadatipo')
-            return redirect(url_for('views.epis'))
+        if session.get('joaoMaria')[-1] != 'C':
+            session['joaoMaria'] = session['joaoMaria'] + 'B'
+            print(session.get('joaoMaria'))
 
-        else:
             tripaDado, tripaCol = prepList(session.get('ansListEscada'))
             tripaDado2, tripaCol2 = prepList(session.get('ansListEscadaTipo'))
 
@@ -167,17 +160,25 @@ def escada():
                                     user=dbUser, password=dbPass)
             cursor = conn.cursor()
 
-            insert1 = f"INSERT INTO escadadados (codescada, declarante, {tripaDado}, dataescada) VALUES ('{session.get('codescada')}', '{session.get('username')}', {tripaCol}, '{datetime.datetime.now()}');"
+            insert1 = f"INSERT INTO escadadados (declarante, {tripaDado}, dataescada) VALUES ('{session.get('username')}', {tripaCol}, '{datetime.datetime.now()}');"
+
             if request.form.get('escadatipo') == 'tesoura':
-                insert2 = f"INSERT INTO escadatesoura (codescada, {tripaDado2}) VALUES ('{session.get('codescada')}', {tripaCol2});"
+                insert2 = f"INSERT INTO escadatesoura (codescada, {tripaDado2}) VALUES (currval('seq_codescada'), {tripaCol2});"
 
             else:
-                insert2 = f"INSERT INTO escadaextensivel (codescada, {tripaDado2}) VALUES ('{session.get('codescada')}', {tripaCol2});"
+                insert2 = f"INSERT INTO escadaextensivel (codescada, {tripaDado2}) VALUES (currval('seq_codescada'), {tripaCol2});"
 
             cursor.execute(insert1)
             cursor.execute(insert2)
             conn.commit()
             conn.close()
+
+        else:
+            session['joaoMaria'] = session['joaoMaria'] + 'B'
+            print(session.get('joaoMaria'))
+
+            session['escadatipo'] = request.form.get('escadatipo')
+            return redirect(url_for('views.epis'))
 
         return redirect(url_for('views.home'))
 
@@ -187,11 +188,6 @@ def escada():
 @views.route('/formulario', methods=['GET', 'POST'])
 @login_required
 def formulario():
-    session['joaoMaria'] = session['joaoMaria'] + 'C'
-
-    global flagGlobal
-    flagGlobal += 1
-    print(f"\n\n\nVariável Global: {flagGlobal}\n\n\n")
     if request.method == 'POST':
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
@@ -204,11 +200,13 @@ def formulario():
             solda=request.form.get('solda'),
             oxicorte=request.form.get('oxicorte'))
 
-        session['codrecursos'] = str(uuid.uuid4())
-
         if request.form.get('escada') == 'TRUE':
+            session['joaoMaria'] = session['joaoMaria'] + 'C'
+            print(session.get('joaoMaria'))
             return redirect(url_for('views.escada'))
         else:
+            session['joaoMaria'] = session['joaoMaria'] + 'C'
+            print(session.get('joaoMaria'))
             return redirect(url_for('views.epis'))
 
     return render_template('formulario.html', user=current_user)
@@ -217,8 +215,6 @@ def formulario():
 @views.route('/epis', methods=['GET', 'POST'])
 @login_required
 def epis():
-    session['joaoMaria'] = session['joaoMaria'] + 'D'
-
     if request.method == 'POST':
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
@@ -244,7 +240,8 @@ def epis():
             resppoeiras=request.form.get('resppoeiras'),
             respvapores=request.form.get('respvapores'))
 
-        session['codepis'] = str(uuid.uuid4())
+        session['joaoMaria'] = session['joaoMaria'] + 'D'
+        print(session.get('joaoMaria'))
 
         return redirect(url_for('views.riscos'))
 
@@ -254,12 +251,9 @@ def epis():
 @views.route('/riscos', methods=['GET', 'POST'])
 @login_required
 def riscos():
-    session['joaoMaria'] = session['joaoMaria'] + 'E'
-
     if request.method == 'POST':
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
-        session['codriscos'] = str(uuid.uuid4())
         session['ansListRiscos'] = dict(
             aprisionamento=request.form.get('aprisionamento'),
             projecao=request.form.get('projecao'),
@@ -313,6 +307,9 @@ def riscos():
             outros=f"'{request.form.get('outros')}'"
         )
 
+        session['joaoMaria'] = session['joaoMaria'] + 'E'
+        print(session.get('joaoMaria'))
+
         return redirect(url_for('views.acoes'))
 
     return render_template("riscos.html", user=current_user)
@@ -321,12 +318,9 @@ def riscos():
 @views.route('/acoes', methods=['GET', 'POST'])
 @login_required
 def acoes():
-    session['joaoMaria'] = session['joaoMaria'] + 'F'
-
     if request.method == 'POST':
         # esse é o comando utilizado pra pegar as informações preenchidas no formulário
 
-        session['codacoes'] = str(uuid.uuid4())
         session['ansListAcoes'] = dict(
             aterramento=request.form.get('aterramento'),
             enclausuramento=request.form.get('enclausuramento'),
@@ -344,6 +338,9 @@ def acoes():
             outrosacoes=f"'{request.form.get('outrosacoes')}'"
         )
 
+        session['joaoMaria'] = session['joaoMaria'] + 'F'
+        print(session.get('joaoMaria'))
+
         return redirect(url_for('views.closing'))
 
     return render_template("acoes.html", user=current_user)
@@ -353,7 +350,7 @@ def acoes():
 @login_required
 def closing():
     session['joaoMaria'] = session['joaoMaria'] + 'G'
-
+    print(session.get('joaoMaria'))
     conn = psycopg2.connect(host=dbHost, database=dbName,
                             user=dbUser, password=dbPass)
     cursor = conn.cursor()
@@ -364,25 +361,25 @@ def closing():
     tripaEpis, tripaEpisCol = prepList(session.get('ansListEpis'))
     tripaAcoes, tripaAcoesCol = prepList(session.get('ansListAcoes'))
 
-    css1 = f"INSERT INTO art ({tripaArt}, codart, codrecursos, codriscos, data, codepis, codacoes) VALUES ({tripaArtCol},'{session.get('codart')}','{session.get('codrecursos')}','{session.get('codriscos')}', '{datetime.datetime.now()}','{session.get('codepis')}','{session.get('codacoes')}');"
-    css2 = f"INSERT INTO recursosmateriais ({tripaRec}, codrecursos) VALUES ({tripaRecCol},'{session.get('codrecursos')}');"
-    css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}, codriscos) VALUES ({tripaRiscosCol},'{session.get('codriscos')}');"
-    css7 = f"INSERT INTO epis ({tripaEpis}, codepis) VALUES ({tripaEpisCol},'{session.get('codepis')}');"
-    css8 = f"INSERT INTO acoes ({tripaAcoes}, codacoes) VALUES ({tripaAcoesCol},'{session.get('codacoes')}');"
+    css1 = f"INSERT INTO art ({tripaArt}, codrecursos, codriscos, data, codepis, codacoes) VALUES ({tripaArtCol}, currval('seq_codrecursos')', currval('seq_codriscos'), '{datetime.datetime.now()}',currval('seq_codepis'),currval('seq_codacoes'));"
+    css2 = f"INSERT INTO recursosmateriais ({tripaRec}) VALUES ({tripaRecCol});"
+    css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}) VALUES ({tripaRiscosCol});"
+    css7 = f"INSERT INTO epis ({tripaEpis}) VALUES ({tripaEpisCol});"
+    css8 = f"INSERT INTO acoes ({tripaAcoes}) VALUES ({tripaAcoesCol});"
 
-    if session.get('codescada'):
+    if session.get('ansListEscada'):
         tripaEscada, tripaEscadaCol = prepList(session.get('ansListEscada'))
         tripaEscada2, tripaEscadaCol2 = prepList(
             session.get('ansListEscadaTipo'))
 
-        css4 = f"INSERT INTO escadadados (codescada, codart, declarante, {tripaEscada}) VALUES ('{session.get('codescada')}', '{session.get('codart')}', '{session.get('username')}', {tripaEscadaCol});"
+        css4 = f"INSERT INTO escadadados (codart, declarante, {tripaEscada}) VALUES (currval('seq_codart')', '{session.get('username')}', {tripaEscadaCol});"
 
         if session.get('escadatipo') == 'tesoura':
             css5 = f"INSERT INTO escadatesoura (codescada, {tripaEscada2}) VALUES ('{session.get('codescada')}', {tripaEscadaCol2});"
         else:
             css5 = f"INSERT INTO escadaextensivel (codescada, {tripaEscada2}) VALUES ('{session.get('codescada')}', {tripaEscadaCol2});"
 
-    css6 = f"INSERT INTO artdeclarante (coddeclarante, codart) VALUES ('{session.get('username')}', '{session.get('codart')}')"
+    css6 = f"INSERT INTO artdeclarante (coddeclarante, codart) VALUES ('{session.get('username')}', currval('seq_codart'))"
 
     # a ordem dos inserts é muito importante para respeitar os vínculos criados no db
     cursor.execute(css8)
