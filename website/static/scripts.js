@@ -1,6 +1,7 @@
 window.onload = function () {
     var datalist = document.createElement("datalist");
     datalist.setAttribute("id", "search");
+    datalist.className = "datalist";
     fetch("static/config_proj.json")
         .then(responseList => responseList.json())
         .then(data => {
