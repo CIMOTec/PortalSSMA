@@ -303,6 +303,10 @@ select::-ms-expand {
   color: rgba(179,175,175,0.25);
 }
 
+.aviso {
+  color: black;
+  font-size:small;
+}
 .textcomm {
   border: 1px solid black;
   background-color: rgba(179,175,175,0.25);
