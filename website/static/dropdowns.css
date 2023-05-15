@@ -302,3 +302,8 @@ select::-ms-expand {
 .select:hover::after {
   color: rgba(179,175,175,0.25);
 }
+
+.aviso {
+  color: black;
+  font-size:small;
+}
