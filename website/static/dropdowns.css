@@ -302,3 +302,33 @@ select::-ms-expand {
 .select:hover::after {
   color: rgba(179,175,175,0.25);
 }
+
+.textcomm {
+  border: 1px solid black;
+  background-color: rgba(179,175,175,0.25);
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Hide the default checkbox */
+.checkTermo {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: red;
+}
+
+/* Style the checkbox when checked */
+.checkTermo:checked {
+  background-color: green;
+}
