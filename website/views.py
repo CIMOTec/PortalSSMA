@@ -373,8 +373,8 @@ def closing():
     datanow = datetime.datetime.now()
 
     css1 = f"INSERT INTO art ({tripaArt}, codrecursos, codriscos, data, codepis, codacoes) VALUES ({tripaArtCol}, currval('seq_codrecursos'), currval('seq_codriscos'), '{datanow}',currval('seq_codepis'),currval('seq_codacoes'));"
-    css2 = f"INSERT INTO recursosmateriais ({tripaRec}) VALUES ({tripaRecCol});"
-    css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}) VALUES ({tripaRiscosCol});"
+    css2 = f"INSERT INTO recursosmateriais ({tripaRec}, codart) VALUES ({tripaRecCol}, currval('seq_codart'));"
+    css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}, codart) VALUES ({tripaRiscosCol}, currval('seq_codart'));"
     css7 = f"INSERT INTO epis ({tripaEpis}) VALUES ({tripaEpisCol});"
     css8 = f"INSERT INTO acoes ({tripaAcoes}) VALUES ({tripaAcoesCol});"
 
@@ -411,6 +411,8 @@ def closing():
 
     tripaInsert = tripaInsert + css6
 
+    print(tripaInsert)
+    input("É O DALE?")
     cursor.execute(tripaInsert)
 
     conn.commit()
