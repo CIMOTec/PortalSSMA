@@ -49,7 +49,6 @@ def prepList(workList):
     tripaDado = []
 
     for key in workList:
-        print(f"{key} : {workList[key]}")
         tripaColuna.append(key)
         if workList[key] == None:
             tripaDado.append('FALSE')
@@ -79,7 +78,6 @@ fechamento - G
 @login_required
 def home():
     session['joaoMaria'] = 'Init'
-    print(session.get('joaoMaria'))
     return render_template("home.html", user=current_user)
 
 
@@ -104,7 +102,6 @@ def novaSolicitacao():
         # esse comando cria o código único para ser utilizado como chave no banco
 
         session['joaoMaria'] = session['joaoMaria'] + 'A'
-        print(session.get('joaoMaria'))
 
         return redirect(url_for('views.formulario'))
 
@@ -122,7 +119,7 @@ def escada():
         if request.form.get('escadatipo') == 'tesoura':
             session['ansListEscadaTipo'] = dict(
                 tamanhoescada=f"'{request.form.get('tamanhoescada')}'",
-                materialescada=request.form.get('materialescada'),
+                materialescada=f"'{request.form.get('materialescada')}'",
                 degraus=request.form.get('degraus'),
                 montantes=request.form.get('montantes'),
                 etiqueta=request.form.get('etiqueta'),
@@ -136,7 +133,7 @@ def escada():
         else:
             session['ansListEscadaTipo'] = dict(
                 tamanhoescada=f"'{request.form.get('tamanhoescada')}'",
-                materialescada=request.form.get('materialescada'),
+                materialescada=f"'{request.form.get('materialescada')}'",
                 degraus=request.form.get('degraus'),
                 montantes=request.form.get('montantes'),
                 etiqueta=request.form.get('etiqueta'),
@@ -152,7 +149,6 @@ def escada():
 
         if session.get('joaoMaria')[-1] != 'C':
             session['joaoMaria'] = session['joaoMaria'] + 'B'
-            print(session.get('joaoMaria'))
 
             tripaDado, tripaCol = prepList(session.get('ansListEscada'))
             tripaDado2, tripaCol2 = prepList(session.get('ansListEscadaTipo'))
@@ -161,7 +157,7 @@ def escada():
                                     user=dbUser, password=dbPass)
             cursor = conn.cursor()
 
-            insert1 = f"INSERT INTO escadadados (declarante, {tripaDado}, dataescada) VALUES ('{session.get('username')}', {tripaCol}, '{datetime.datetime.now()}');"
+            insert1 = f"BEGIN; SELECT * FROM escadadados FOR UPDATE; INSERT INTO escadadados (declarante, {tripaDado}, dataescada) VALUES ('{session.get('username')}', {tripaCol}, '{datetime.datetime.now()}');"
 
             if request.form.get('escadatipo') == 'tesoura':
                 insert2 = f"INSERT INTO escadatesoura (codescada, {tripaDado2}) VALUES (currval('seq_codescada'), {tripaCol2});"
@@ -169,8 +165,9 @@ def escada():
             else:
                 insert2 = f"INSERT INTO escadaextensivel (codescada, {tripaDado2}) VALUES (currval('seq_codescada'), {tripaCol2});"
 
-            cursor.execute(insert1)
-            cursor.execute(insert2)
+            tripaInsert = insert1 + insert2
+
+            cursor.execute(tripaInsert)
             conn.commit()
             conn.close()
 
@@ -178,7 +175,6 @@ def escada():
 
         else:
             session['joaoMaria'] = session['joaoMaria'] + 'B'
-            print(session.get('joaoMaria'))
 
             session['escadatipo'] = request.form.get('escadatipo')
             return redirect(url_for('views.epis'))
@@ -211,11 +207,9 @@ def formulario():
 
         if request.form.get('escada') == 'TRUE':
             session['joaoMaria'] = session['joaoMaria'] + 'C'
-            print(session.get('joaoMaria'))
             return redirect(url_for('views.escada'))
         else:
             session['joaoMaria'] = session['joaoMaria'] + 'C'
-            print(session.get('joaoMaria'))
             return redirect(url_for('views.epis'))
 
     return render_template('formulario.html', user=current_user)
@@ -250,7 +244,6 @@ def epis():
             respvapores=request.form.get('respvapores'))
 
         session['joaoMaria'] = session['joaoMaria'] + 'D'
-        print(session.get('joaoMaria'))
 
         return redirect(url_for('views.riscos'))
 
@@ -317,7 +310,6 @@ def riscos():
         )
 
         session['joaoMaria'] = session['joaoMaria'] + 'E'
-        print(session.get('joaoMaria'))
 
         return redirect(url_for('views.acoes'))
 
@@ -348,7 +340,6 @@ def acoes():
         )
 
         session['joaoMaria'] = session['joaoMaria'] + 'F'
-        print(session.get('joaoMaria'))
 
         return redirect(url_for('views.closing'))
 
@@ -359,7 +350,6 @@ def acoes():
 @login_required
 def closing():
     session['joaoMaria'] = session['joaoMaria'] + 'G'
-    print(session.get('joaoMaria'))
     conn = psycopg2.connect(host=dbHost, database=dbName,
                             user=dbUser, password=dbPass)
     cursor = conn.cursor()
@@ -369,10 +359,11 @@ def closing():
     tripaRiscos, tripaRiscosCol = prepList(session.get('ansListRiscos'))
     tripaEpis, tripaEpisCol = prepList(session.get('ansListEpis'))
     tripaAcoes, tripaAcoesCol = prepList(session.get('ansListAcoes'))
+    datanow = datetime.datetime.now()
 
-    css1 = f"INSERT INTO art ({tripaArt}, codrecursos, codriscos, data, codepis, codacoes) VALUES ({tripaArtCol}, currval('seq_codrecursos'), currval('seq_codriscos'), '{datetime.datetime.now()}',currval('seq_codepis'),currval('seq_codacoes'));"
-    css2 = f"INSERT INTO recursosmateriais ({tripaRec}) VALUES ({tripaRecCol});"
-    css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}) VALUES ({tripaRiscosCol});"
+    css1 = f"INSERT INTO art ({tripaArt}, codrecursos, codriscos, data, codepis, codacoes) VALUES ({tripaArtCol}, currval('seq_codrecursos'), currval('seq_codriscos'), '{datanow}',currval('seq_codepis'),currval('seq_codacoes'));"
+    css2 = f"INSERT INTO recursosmateriais ({tripaRec}, codart) VALUES ({tripaRecCol}, currval('seq_codart'));"
+    css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}, codart) VALUES ({tripaRiscosCol}, currval('seq_codart'));"
     css7 = f"INSERT INTO epis ({tripaEpis}) VALUES ({tripaEpisCol});"
     css8 = f"INSERT INTO acoes ({tripaAcoes}) VALUES ({tripaAcoesCol});"
 
@@ -382,29 +373,33 @@ def closing():
         tripaEscada2, tripaEscadaCol2 = prepList(
             session.get('ansListEscadaTipo'))
 
-        css4 = f"INSERT INTO escadadados (codart, declarante, {tripaEscada}) VALUES (currval('seq_codart'), '{session.get('username')}', {tripaEscadaCol});"
+        css4 = f"INSERT INTO escadadados (codart, declarante, {tripaEscada}, dataescada) VALUES (currval('seq_codart'), '{session.get('username')}', {tripaEscadaCol}, '{datanow}');"
 
         if session.get('escadatipo') == 'tesoura':
+            tripaInsert = "BEGIN; SELECT * FROM art, recursosmateriais, riscospontenciais, epis, acoes, escadadados, escadatesoura, artdeclarante FOR UPDATE;"
             css5 = f"INSERT INTO escadatesoura (codescada, {tripaEscada2}) VALUES (currval('seq_codescada'), {tripaEscadaCol2});"
         else:
+            tripaInsert = "BEGIN; SELECT * FROM art, recursosmateriais, riscospontenciais, epis, acoes, escadadados, escadaextensivel, artdeclarante FOR UPDATE;"
             css5 = f"INSERT INTO escadaextensivel (codescada, {tripaEscada2}) VALUES (currval('seq_codescada'), {tripaEscadaCol2});"
 
     css6 = f"INSERT INTO artdeclarante (coddeclarante, codart) VALUES ('{session.get('username')}', currval('seq_codart'))"
 
     # a ordem dos inserts é muito importante para respeitar os vínculos criados no db
-    cursor.execute(css8)
-    cursor.execute(css7)
-    cursor.execute(css3)
-    cursor.execute(css2)
-    cursor.execute(css1)
+
+    if 'tripaInsert' in locals():
+        pass
+    else:
+        tripaInsert = "BEGIN; SELECT * FROM art, recursosmateriais, riscospontenciais, epis, acoes, artdeclarante FOR UPDATE;"
+
+    tripaInsert = tripaInsert + css8 + css7 + css3 + css2 + css1
 
     try:
-        cursor.execute(css4)
-        cursor.execute(css5)
+        tripaInsert = tripaInsert + css4 + css5
     except UnboundLocalError:
         pass
 
-    cursor.execute(css6)
+    tripaInsert = tripaInsert + css6
+    cursor.execute(tripaInsert)
 
     conn.commit()
     conn.close()
