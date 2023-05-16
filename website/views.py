@@ -49,7 +49,6 @@ def prepList(workList):
     tripaDado = []
 
     for key in workList:
-        print(f"{key} : {workList[key]}")
         tripaColuna.append(key)
         if workList[key] == None:
             tripaDado.append('FALSE')
@@ -79,7 +78,6 @@ fechamento - G
 @login_required
 def home():
     session['joaoMaria'] = 'Init'
-    print(session.get('joaoMaria'))
     return render_template("home.html", user=current_user)
 
 
@@ -104,7 +102,6 @@ def novaSolicitacao():
         # esse comando cria o código único para ser utilizado como chave no banco
 
         session['joaoMaria'] = session['joaoMaria'] + 'A'
-        print(session.get('joaoMaria'))
 
         return redirect(url_for('views.formulario'))
 
@@ -152,7 +149,6 @@ def escada():
 
         if session.get('joaoMaria')[-1] != 'C':
             session['joaoMaria'] = session['joaoMaria'] + 'B'
-            print(session.get('joaoMaria'))
 
             tripaDado, tripaCol = prepList(session.get('ansListEscada'))
             tripaDado2, tripaCol2 = prepList(session.get('ansListEscadaTipo'))
@@ -179,7 +175,6 @@ def escada():
 
         else:
             session['joaoMaria'] = session['joaoMaria'] + 'B'
-            print(session.get('joaoMaria'))
 
             session['escadatipo'] = request.form.get('escadatipo')
             return redirect(url_for('views.epis'))
@@ -212,11 +207,9 @@ def formulario():
 
         if request.form.get('escada') == 'TRUE':
             session['joaoMaria'] = session['joaoMaria'] + 'C'
-            print(session.get('joaoMaria'))
             return redirect(url_for('views.escada'))
         else:
             session['joaoMaria'] = session['joaoMaria'] + 'C'
-            print(session.get('joaoMaria'))
             return redirect(url_for('views.epis'))
 
     return render_template('formulario.html', user=current_user)
@@ -251,7 +244,6 @@ def epis():
             respvapores=request.form.get('respvapores'))
 
         session['joaoMaria'] = session['joaoMaria'] + 'D'
-        print(session.get('joaoMaria'))
 
         return redirect(url_for('views.riscos'))
 
@@ -318,7 +310,6 @@ def riscos():
         )
 
         session['joaoMaria'] = session['joaoMaria'] + 'E'
-        print(session.get('joaoMaria'))
 
         return redirect(url_for('views.acoes'))
 
@@ -349,7 +340,6 @@ def acoes():
         )
 
         session['joaoMaria'] = session['joaoMaria'] + 'F'
-        print(session.get('joaoMaria'))
 
         return redirect(url_for('views.closing'))
 
@@ -360,7 +350,6 @@ def acoes():
 @login_required
 def closing():
     session['joaoMaria'] = session['joaoMaria'] + 'G'
-    print(session.get('joaoMaria'))
     conn = psycopg2.connect(host=dbHost, database=dbName,
                             user=dbUser, password=dbPass)
     cursor = conn.cursor()
@@ -410,9 +399,6 @@ def closing():
         pass
 
     tripaInsert = tripaInsert + css6
-
-    print(tripaInsert)
-    input("É O DALE?")
     cursor.execute(tripaInsert)
 
     conn.commit()
