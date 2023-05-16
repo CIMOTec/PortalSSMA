@@ -31,7 +31,10 @@ def login():
         cursor.execute(query1)
         rows = cursor.fetchone()
 
-        passwordOk = check_password_hash(rows[0], password)
+        try:
+            passwordOk = check_password_hash(rows[0], password)
+        except TypeError:
+            passwordOk = False
 
         if passwordOk:
             user = User.query.filter_by(username=username).first()
