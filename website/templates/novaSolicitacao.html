@@ -20,16 +20,10 @@ content %}
         </div>
       </div>
 
-        <!-- <div class="outerBox" id="datalist-container">
-            <label class="input-group-text">Contrato</label>
-            <input type="text" class="form-control" name="contrato"
-                placeholder="Pesquise..." list="search" autocomplete="on" required>
-        </div> -->
-
         <div class="outerBox">
-            <div class="inputBox" id="datalist-container">
-                <input type="text" name="contrato"
-                    placeholder="CONTRATO" list="search" autocomplete="on" required>
+            <div class="inputBox" id="">
+                <input type="text" name="contrato" id="datalist-container"
+                    placeholder="CONTRATO" list="search" autocomplete="on" required oninput="validateInput()">
                 <span>Contrato</span>
             </div>
         </div>
@@ -121,4 +115,33 @@ content %}
     </a>
     </div>
   </form>
+  <script>
+    var inputElement = document.getElementById("datalist-container").value;
+
+    var options = document.getElementById("search").getElementsByTagName("option");
+    var validInput = false;
+
+    options.addEventListener("input", validateInput)
+
+    function validateInput() {
+        var inputElement = document.getElementById("datalist-container").value;
+
+        var options = document.getElementById("search").getElementsByTagName("option");
+        var validInput = false;
+        for (var i = 0; i < options.length; i++) {
+            if (inputElement === options[i].value){
+                validInput = true;
+                break;
+            }
+        }
+
+        if (validInput) {
+            inputElement.classList.add("valid");
+            inputElement.classList.remove("invalid");
+        } else {
+            inputElement.classList.add("invalid");
+            inputElement.classList.remove("valid");
+        }
+    }
+  </script>
   {% endblock %}

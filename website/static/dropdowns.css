@@ -336,3 +336,11 @@ select::-ms-expand {
 .checkTermo:checked {
   background-color: green;
 }
+
+.valid {
+  border-color: green;
+}
+
+.invalid {
+  border-color: red;
+}
