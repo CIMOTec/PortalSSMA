@@ -160,10 +160,10 @@ def escada():
             insert1 = f"BEGIN; SELECT * FROM escadadados FOR UPDATE; INSERT INTO escadadados (declarante, {tripaDado}, dataescada) VALUES ('{session.get('username')}', {tripaCol}, '{datetime.datetime.now()}');"
 
             if request.form.get('escadatipo') == 'tesoura':
-                insert2 = f"INSERT INTO escadatesoura (codescada, {tripaDado2}) VALUES (currval('seq_codescada'), {tripaCol2});"
+                insert2 = f"BEGIN; SELECT * FROM escadatesoura FOR UPDATE; INSERT INTO escadatesoura (codescada, {tripaDado2}) VALUES (currval('seq_codescada'), {tripaCol2});"
 
             else:
-                insert2 = f"INSERT INTO escadaextensivel (codescada, {tripaDado2}) VALUES (currval('seq_codescada'), {tripaCol2});"
+                insert2 = f"BEGIN; SELECT * FROM escadaextensivel FOR UPDATE; INSERT INTO escadaextensivel (codescada, {tripaDado2}) VALUES (currval('seq_codescada'), {tripaCol2});"
 
             tripaInsert = insert1 + insert2
 
@@ -361,11 +361,11 @@ def closing():
     tripaAcoes, tripaAcoesCol = prepList(session.get('ansListAcoes'))
     datanow = datetime.datetime.now()
 
-    css1 = f"INSERT INTO art ({tripaArt}, codrecursos, codriscos, data, codepis, codacoes) VALUES ({tripaArtCol}, currval('seq_codrecursos'), currval('seq_codriscos'), '{datanow}',currval('seq_codepis'),currval('seq_codacoes'));"
-    css2 = f"INSERT INTO recursosmateriais ({tripaRec}, codart) VALUES ({tripaRecCol}, currval('seq_codart'));"
-    css3 = f"INSERT INTO riscospontenciais ({tripaRiscos}, codart) VALUES ({tripaRiscosCol}, currval('seq_codart'));"
-    css7 = f"INSERT INTO epis ({tripaEpis}) VALUES ({tripaEpisCol});"
-    css8 = f"INSERT INTO acoes ({tripaAcoes}) VALUES ({tripaAcoesCol});"
+    css1 = f"BEGIN; SELECT * FROM art FOR UPDATE; INSERT INTO art ({tripaArt}, codrecursos, codriscos, data, codepis, codacoes) VALUES ({tripaArtCol}, currval('seq_codrecursos'), currval('seq_codriscos'), '{datanow}',currval('seq_codepis'),currval('seq_codacoes'));"
+    css2 = f"BEGIN; SELECT * FROM recursosmateriais FOR UPDATE; SELECT currval('seq_codart'); INSERT INTO recursosmateriais ({tripaRec}, codart) VALUES ({tripaRecCol}, currval('seq_codart'));"
+    css3 = f"BEGIN; SELECT * FROM riscospontenciais FOR UPDATE; SELECT last_value FROM seq_codart; INSERT INTO riscospontenciais ({tripaRiscos}, codart) VALUES ({tripaRiscosCol}, currval('seq_codart'));"
+    css7 = f"BEGIN; SELECT * FROM epis FOR UPDATE; INSERT INTO epis ({tripaEpis}) VALUES ({tripaEpisCol});"
+    css8 = f"BEGIN; SELECT * FROM acoes FOR UPDATE; INSERT INTO acoes ({tripaAcoes}) VALUES ({tripaAcoesCol});"
 
     if session.get('escadaLock'):
         session['escadaLock'] = False
@@ -373,34 +373,30 @@ def closing():
         tripaEscada2, tripaEscadaCol2 = prepList(
             session.get('ansListEscadaTipo'))
 
-        css4 = f"INSERT INTO escadadados (codart, declarante, {tripaEscada}, dataescada) VALUES (currval('seq_codart'), '{session.get('username')}', {tripaEscadaCol}, '{datanow}');"
+        css4 = f"BEGIN; SELECT * FROM escadadados FOR UPDATE; SELECT currval('seq_codart'); INSERT INTO escadadados (codart, declarante, {tripaEscada}, dataescada) VALUES (currval('seq_codart'), '{session.get('username')}', {tripaEscadaCol}, '{datanow}');"
 
         if session.get('escadatipo') == 'tesoura':
-            tripaInsert = "BEGIN; SELECT * FROM art, recursosmateriais, riscospontenciais, epis, acoes, escadadados, escadatesoura, artdeclarante FOR UPDATE;"
-            css5 = f"INSERT INTO escadatesoura (codescada, {tripaEscada2}) VALUES (currval('seq_codescada'), {tripaEscadaCol2});"
-        else:
-            tripaInsert = "BEGIN; SELECT * FROM art, recursosmateriais, riscospontenciais, epis, acoes, escadadados, escadaextensivel, artdeclarante FOR UPDATE;"
-            css5 = f"INSERT INTO escadaextensivel (codescada, {tripaEscada2}) VALUES (currval('seq_codescada'), {tripaEscadaCol2});"
+            css5 = f"BEGIN; SELECT * FROM escadatesoura FOR UPDATE; SELECT currval('seq_codescada'); INSERT INTO escadatesoura (codescada, {tripaEscada2}) VALUES (currval('seq_codescada'), {tripaEscadaCol2});"
+        elif session.get('escadatipo') == 'extensivel':
+            css5 = f"BEGIN; SELECT * FROM escadaextensivel FOR UPDATE; SELECT currval('seq_codescada'); INSERT INTO escadaextensivel (codescada, {tripaEscada2}) VALUES (currval('seq_codescada'), {tripaEscadaCol2});"
 
-    css6 = f"INSERT INTO artdeclarante (coddeclarante, codart) VALUES ('{session.get('username')}', currval('seq_codart'))"
+    css6 = f"BEGIN; SELECT * FROM artdeclarante FOR UPDATE; SELECT currval('seq_codart'); INSERT INTO artdeclarante (coddeclarante, codart) VALUES ('{session.get('username')}', currval('seq_codart'))"
 
     # a ordem dos inserts é muito importante para respeitar os vínculos criados no db
 
-    if 'tripaInsert' in locals():
-        pass
-    else:
-        tripaInsert = "BEGIN; SELECT * FROM art, recursosmateriais, riscospontenciais, epis, acoes, artdeclarante FOR UPDATE;"
-
-    tripaInsert = tripaInsert + css8 + css7 + css3 + css2 + css1
+    cursor.execute(css8)
+    cursor.execute(css7)
+    cursor.execute(css3)
+    cursor.execute(css2)
+    cursor.execute(css1)
 
     try:
-        tripaInsert = tripaInsert + css4 + css5
+        cursor.execute(css4)
+        cursor.execute(css5)
     except UnboundLocalError:
         pass
 
-    tripaInsert = tripaInsert + css6
-    cursor.execute(tripaInsert)
-
+    cursor.execute(css6)
     conn.commit()
     conn.close()
 
